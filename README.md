@@ -18,7 +18,7 @@ Change the following 3 entries:
   and change the `url` to reflect the `host`.
 - copy the folder `apidocs` to `<pathToApacheTomcat>/webapps/`
 
-###To Access 
+###To Access (DO NOT USE IT  right now)
 
 Use `https://<host>/apidocs/index.html`
 
