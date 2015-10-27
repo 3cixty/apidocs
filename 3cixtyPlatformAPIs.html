@@ -1,0 +1,273 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="google-translate-customization" content="83bfcc196b36ca47-c4c32ed5fd4f4f55-g50148814a343d054-f"/>
+	<link href="login/normalize.css" rel="stylesheet" type="text/css" media="screen">
+	<link href="login/assets.css" rel="stylesheet" type="text/css" media="screen">
+	<link href="login/fontello.css" rel="stylesheet" type="text/css" media="screen">
+	<link href="login/landing.css" rel="stylesheet" type="text/css" media="screen">
+
+	<title>3cixty Platform APIs</title>
+</head>
+
+<body class="privacy-policy">
+	<div id="header">
+		<div class="logos">
+			<div class="left-logo"></div>
+			<div class="center-logo"></div>
+			<div class="right-logo"></div>
+		</div>
+	</div>
+	<section id="top-fold">
+		<div class="container">
+			<article class="content privacy-article">
+				<h2 class="privacy-title">3cixty Platform APIs</h2>
+				<span class="tag-desc"></span>
+				<p class="privacy-desc">3cixty APIs are defined in following categories.</p>
+				<br>
+                <h3 class="privacy-title">Query Manager/Augmenter APIs</h3>
+                <span class="tag-desc"></span>
+                
+                <p class="privacy-desc"> The <strong>Query Manager/Augmenter</strong> endpoint is the main endpoint that developers can use to make queries to the <i>3cixty</i> knowledgebase. Note that, these queries can also be augmented, e.g., based on the user provided ratings to an item and is based on the data available in the KB. The queries can be made using a <i>RESTful API</i>, or using <i>Rich RESTful API</i> that support <i>SPARQL</i> queries as a parameter to the API. The creation of the SPARQL queries can be understood using the <i>Developer mode</i> in the 3cixty related <a href="www.3cixty.com/webApp/">ExplorMI 360</a> app.</p>
+                <p class="privacy-desc"> The result provided by the APIs is in <code>JSON</code> format. Various APIs are exposed includes counting items, clustering based on single filter and multiple filters, extracting items with relevant information, and providing results based on ratings provided to an item. APIs are also provided that mix multiple above mentioned API features.</p>
+                <p class="privacy-desc"> The functionality of an API is only limited to reading the data from the KB. Please do not provide <code>Insert/Delete SPARQL</code> queries, the APIs will not work.</p>
+                <p class="privacy-desc"> Please refer to the Knowledgebase schema <a href="">here<a/> for the complete understanding of the <i>3cixty</i> Knowledgebase.</p>
+                
+                <p class="privacy-desc"><a href="http://localhost:8080/apidocs/index.html">Go to APIs</a></p>
+
+				<h3 class="privacy-title">Wishlist API (also known as Tray API)</h3>
+				<span class="tag-desc"></span>
+                <p class="privacy-desc">The <b>Wishlist API</b> is a set of APIs that provide features for reading and writing the prefered items of a user from and into the <i>3cixty</i> Platform. One of the feature of the API is to provide listing of the stored items in the <b>Wish List</b>. The API returns this output in <code>JSON</code> format. Further, using other parameters required for the API, items can be added to the <b>Wish List</b>. The API also provides functionality for updating the items in the <b>Wish List</b>. The update feature is limited to whether the item was already attended by the user, time when the item was attended, rating provided by the user, and whether the item was deleted. On a successful execution, the <code>HTTP status code = 200</code> is returned otherwise appropriate <code>HTTP status code</code> is returned.</p>
+                <p class="privacy-desc">Various actions that can be performed on the <b>Wish List</b> are:
+                    <ul>
+                        <li> add an item to the <b>Wish List</b>,</li>
+                        <li> update an item in the <b>Wish List</b>,</li>
+                        <li> retrieving all the items in the <b>Wish List</b>,</li>
+                        <li> retrieve all items (information in details) in the <b>Wish List</b>,</li>
+                        <li> login into <b>Wish List</b>,</li>
+                        <li> remove all items from the <b>Wish List</b></li>
+                    </ul>
+                 </p>
+                 <p class="privacy-desc">Further when retrieving all the items in the <b>Wish List</b>, a <code>JSON</code> is produced that has the information about the items in the <b>Wish List</b>. The <code>JSON</code> primarily include properites like: <code>element_id</code>, <code>element_type</code>, <code>element_title</code>, <code>timestamp</code>, <code>token</code>, <code>source</code>, <code>attend</code>, <code>attend_datetime</code>, <code>rating</code>, <code>image_url</code>.</p>
+                
+                <p class="privacy-desc"><a href="http://localhost:8080/apidocs/index.html">Go to APIs</a></p>
+                
+                
+				<h3 class="privacy-title">Profile APIs</h3>
+				<span class="tag-desc"></span>
+				<p class="privacy-desc"><b>Profile API</b> provides features including reading and writing of the user profile in the KB. If a user logs in for the first time, the APIs store user credentials limited to 3cixty ID, First Name, Last Name, Profile Image on the source and the source used to authenticate the user  in the KB. Note that here the source can be either <i>Google</i> or <i>Facebook</i>. On a successful execution the HTTP status 200 is returned otherwise appropriate HTTP status code is returned. The Profile API supports reading and writing of data fields like:
+                    <ul>
+                        <li> 3cixty UID which is unique for each user</li>
+                        <li> First name</li>
+                        <li> Last name</li>
+                    </ul>
+                </p>
+				
+                <p class="privacy-desc"><a href="http://localhost:8080/apidocs/index.html">Go to APIs</a></p>
+                
+                
+				<h3 class="privacy-title">OAuth APIs</h3>
+				<span class="tag-desc"></span>
+					<p class="privacy-desc">The <i>3cixty</i> Oauth is the <i>Authentication</i> and <i>Authorization</i> component that authenticates a user and the application associated to <i>3cixty</i> Platform.
+					</p>
+                    <p class="privacy-desc">The <i>3cixty OAuth APIs</i> provides capabilities to:</p>
+                        <ul>
+                            <li> <p class="privacy-desc">Developers to register their applications which need access to user's private data such as their <b>Wish List</b></p></li>
+                            <li> <p class="privacy-desc">Users to explicitly declare whether or not they want the application to access their personal data, viz., their <b>Wish List</b></p></li>
+                            <li> <p class="privacy-desc">Authenticate and Authorize user and applications</p></li>
+                        </ul>
+                    </p>
+                    <p class="privacy-desc">Before going into the details of APIs associated to OAuth, we describe some terms used in this document:</p>
+                    <ul>
+                        <li> <p class="privacy-desc"> <code>3cixty App Key</code>: is a unique string within the <i>3cixty</i> Platform. This key is used to authenticate applications that are using the <i>3cixty</i> Platform.</p></li>
+                        <li> <p class="privacy-desc"><code>redirect_uri</code>: is a <i>callback URI</i> for Web applications. Basically, when a Web application authenticates with the <i>3cixty</i> Platform, the <i>3cixty</i> Platform internally generates a <i>3cixty token</i> and uses the <code>redirect_uri</code> value to send you back the <i>3cixty token</i>. The <i>3cixty token</i> includes information about:</p>
+                            <ul>
+                                <li><p class="privacy-desc"><code>3cixty access_token</code></p></li>
+                                <li><p class="privacy-desc"><code>3cixty refresh_token</code></p></li>
+                                <li><p class="privacy-desc"><code>3cixty scope</code></p></li>
+                                <li><p class="privacy-desc"><code>expires_in</code></p></li>
+                            </ul>
+                            <p class="privacy-desc"> The <code>redirect_uri</code> is not required by the Android applications. However, it is mandatory for the Web applications. A typical example of full URI that the 3cixty Platform sends back to the Web application is:</p>
+                            <pre>http://test.com/redirect_uri.html#access_token=&lt;access_token&gt;&refresh_token=&lt;refresh_token&gt;&expires_in=&lt;expiration_in_second&gt;&scope=&lt;scope&gt;</pre>
+                        </li>
+                        <li> <p class="privacy-desc"> <code>3cixty access_token</code>: is a unique string within the <i>3cixty</i> Platform. You mostly have to use the <code>3cixty access_token</code> to call <i>3cixty</i> Platform APIs. After being generated, each <code>3cixty access_token</code> is only valid for a day (<code>84600</code> seconds). Whenever your current <code>3cixty access_token</code> is invalid, you have to refresh the expired token.</p></li>
+                        <li> <p class="privacy-desc"> <code>3cixty refresh_token</code>: is a unique string within the <i>3cixty</i> Platform. The <code>3cixty refresh_token</code> always accompanies a <code>3cixty access_token</code>. The <code>3cixty refresh_token</code> is used to refresh the expired token. The results of refreshing expired token is that it will generate a new <code>3cixty access_token</code>, a new <code>3cixty refresh_token</code>, but will have the same <code>3cixty scope</code> and will be valid for 1 day.</p></li>
+                        <li> <p class="privacy-desc"><code>3cixty scope</code>: is what users grant permission for. Please note that <code>3cixty scope</code> is in a comma separated for/mat. The list below provides all the possible values for the <code>3cixty scope</code>:</p>
+                            <ul>
+                                <li><p class="privacy-desc"><code>Profile</code></p></li>
+                                <li><p class="privacy-desc"><code>WishList, Profile</code></p></li>
+                                <li><p class="privacy-desc"><code>WishList</code></p></li>
+                                <li><p class="privacy-desc"><code>null</code></p></li>
+                            </ul>
+                            <p class="privacy-desc"><b>Note</b>: <code>null</code> means that users did not grant applications the access to their <code>Profile</code> or <code>Wish List</code>.</p>
+                        </li>
+                    </ul>
+                    </p>
+                    <p class="privacy-desc"> Following APIs in the OAuth APIs list can be accessed via <i>3cixty</i> Platform directly to understand better:</p>
+                    <ul>
+                        <li><p class="privacy-desc"> <code>GET /getGoogleAccessToken</code></p>
+                            <p class="privacy-desc">This API runs on a web browser to get a <code>Google access_token</code>. Please open <a href="https://api.3cixty.com/oauth-demo/login.html">https://api.3cixty.com/v2/googleToken.jsp</a> on your web browser to get your the <code>Google access_token</code>.</p>
+                        
+                        </li>
+                        
+                        <li><p class="privacy-desc"><code>Web Authentication</code></p>
+                            <ul>
+                                <li><p class="privacy-desc"><code>GET /auth</code></p>
+                                    <p class="privacy-desc">
+                                        This endpoint supports JavaScript applications that run on a Web browser.</p>
+                                    <p class="privacy-desc">After authenticating a user with the <i>3cixty</i> Platform, the <i>3cixty</i> platform sends back a 3cixty token to you through the <code>3cixty redirect_uri</code>. The 3cixty token includes information about <code>3cixty access_token</code>, <code>3cixty refresh_token</code>, <code>expires_in</code> and a list of accepted <code>3cixty scope</code>(s).</p>
+                                    <p class="privacy-desc">For example, if your <code>redirect_uri = http://test.com/redirect_uri.html</code>, typical values sent by the <i>3cixty</i> Platform to your Web application are in the <i>URL</i> location like: <pre>http://test.com/redirect_uri.html#access_token=&lt;access_token&gt;&refresh_token=&lt;refresh_token&gt;&expires_in=&lt;expiration_in_second&gt;&scope=&lt;scope&gt;
+                                        </pre></p>
+                                    <p class="privacy-desc">To use this API developers should provide their <code>3cixty App Key</code> in the <code>query</code> parameter of the HTTP request.</p>
+                                    <p class="privacy-desc">If the <code>3cixty App key</code> is invalid, you will get an error message, for example <code>{"response": "failed", "reason": "&lt;reason&gt;"}</code>.</p>
+                                    <p class="privacy-desc">Some reasons returned are:
+                                    </p>
+                                    <ul>
+                                        <li> <p class="privacy-desc">key is invalid</p></li>
+                                    </ul>
+                                    <p class="privacy-desc">Please check a Javascript application at <a href="https://api.3cixty.com/oauth-demo/login.html">https://api.3cixty.com/oauth-demo/login.html</a> to know how to authenticate with the <i>3cixty</i> Platform.</p>
+                                </li>
+                            </ul>
+                        </li>
+                        <li><p class="privacy-desc"> <code>Android Authentication</code></p>
+                            <p class="privacy-desc">
+                            Please check a Android application at <a href="https://github.com/3cixty/android-client-sample">https://github.com/3cixty/android-client-sample</a> to know how to authenticate with the <i>3cixty</i> Platform.</p></li>
+                    </ul>
+                    
+                    <p class="privacy-desc"><a href="http://localhost:8080/apidocs/index.html">Go to APIs</a></p>
+                    
+                    
+                <h3 class="privacy-title">Feedback APIs</h3>
+				<span class="tag-desc"></span>
+                <p class="privacy-desc">
+				The API helps developers to send user feedback to the <i>3cixty</i> platform. This API can be used by mobile clients to report user feedback from within the apps.
+                </p>
+                <p class="privacy-desc"><a href="http://localhost:8080/apidocs/index.html">Go to APIs</a></p>
+                
+                
+                
+                <h3 class="privacy-title">GoflowIntegration APIs</h3>
+                <span class="tag-desc"></span>
+                <p class="privacy-desc"> The APIs helps developers to:</p>
+                <ul>
+                    <li> <p class="privacy-desc">register an App on <i>GoFlow</i> server. This action requires a <code>3cixty App Key</code> and <code>Google access_token</code>,</p></li>
+                    <li> <p class="privacy-desc">create or retrieve a developer account on <i>GoFlow</i> server,</p></li>
+                    <li> <p class="privacy-desc">create or retrieve a <i>GoFlow</i> account based on the <code>3cixty access_token</code>.</p></li>
+                </ul>
+                <p class="privacy-desc"><a href="http://localhost:8080/apidocs/index.html">Go to APIs</a></p>
+                
+                
+                
+                <h3 class="privacy-title">MoveSmarterIntegration APIs</h3>
+                <span class="tag-desc"></span>
+                <p class="privacy-desc">
+                The API helps developers to get <i>MoveSmarter</i> (by Mobidot Inc.) accounts via <i>3cixty</i> platform and the <i>onetimetoken</i> from the <i>MoveSmarter</i> server.
+                </p>
+                <p class="privacy-desc"><a href="http://localhost:8080/apidocs/index.html">Go to APIs</a></p>
+                
+                
+                
+                <h3 class="privacy-title">Goflow APIs</h3>
+                <span class="tag-desc"></span>
+                <p class="privacy-desc">
+                Please refere to the Goflow APIs and docs mentioned in the links below:</p>
+                <ul>
+                    <li> <p class="privacy-desc"><code> Android</code>: <a href="https://goflow.ambientic.mobi/docs/android_v3_1.html">https://goflow.ambientic.mobi/docs/android_v3_1.html</a></p></li>
+                    <li> <p class="privacy-desc"><code> Java</code>: <a href="https://goflow.ambientic.mobi/docs/desktop_v3_1.html">https://goflow.ambientic.mobi/docs/desktop_v3_1.html</a></p></li>
+                    <li> <p class="privacy-desc"><code> iOS</code>: Will be available soon</p></li>
+                </ul>
+                
+                <h3 class="privacy-title">MoveSmarter APIs</h3>
+                <span class="tag-desc"></span>
+                <p class="privacy-desc">
+                The <i>MoveSmarter</i> platform is an open ICT toolbox for App developers that creates capabilities for an App to automatically measure individual travel behaviour via the Smartphone and to create a 24x7 multimodal travel profile of a user. With this travel profile, for example, Apps can be designed that provide insight in traveller flows and patterns, modality use and transits and frequent routes of target groups. This can be done on an individual level providing users with feedback on their travel behaviour and profile or providing tailored information (on e.g. city POI's you have missed so far) based on this profile. This can also be done on a group level providing target groups of users with feedback on their collective travel behaviour or to provide information that is useful in a social context (sharing profile information).</p>
+                <p class="privacy-desc">The <i>MoveSmarter</i> platform can be used together with other <i>3cixty</i> APIs and interfaces to create advanced application scenarios. For example the MoveSmarter platform can be used together with the <i>Wish List</i> API. It's up to you!</p>
+                <p class="privacy-desc"><i>MoveSmarter</i> consists of a <code>mobile sensing lib</code> and a server platform. The sensing lib can be embedded in one's own mobile application (Apple or Android), and it autonomously senses all trips the user makes and submit them to the MoveSmarter back-end platform which further analyses and enriches these trips, creates long-term personal mobility patterns of all sorts and kinds and  makes them available for Apps or mobile applications in a secure way. This results in a rich personal dataset which can be queried using a <code>REST/JSON</code> style API.</p>
+                <p class="privacy-desc">Information items that can be accessed via the interface are:</p>
+                <ul>
+                    <li> <p class="privacy-desc">timestamps of each trip start and end;</p></li>
+                    <li> <p class="privacy-desc">location mapping of trip origin, route and destination;</p></li>
+                    <li> <p class="privacy-desc">modality of each trip;</p></li>
+                    <li> <p class="privacy-desc">frequent visited personal places; </p></li>
+                    <li> <p class="privacy-desc">frequent routes;</p></li>
+                    <li> <p class="privacy-desc">Moreover via the interface combinations of information items can be retrieved. For example</p></li>
+                    <li> <p class="privacy-desc">give me all trips of user X this week</p></li>
+                    <li> <p class="privacy-desc">give me all users that have visited location Y in the last 24 hours</p></li>
+                    <li> <p class="privacy-desc">give me all users that have visited location Z more than three times since the start of using the App AND stayed their for more than 3 hours each time.</p></li>
+                </ul>
+                <p class="privacy-desc"> To get access to this API please follow the procedure below:</p>
+                <ul>
+                    <li> <p class="privacy-desc">The data model as well as the API specification are documented at <a href="https://www.movesmarter.nl/portal/appdev/test">https://www.movesmarter.nl/portal/appdev/test</a>. Java stubs for all classes are also provided in <code>Mobidot_java_classes.zip</code> which can be used for easy serialization. The java classes zip file can be requested from the <i>Mobidot</i> <a href="mailto:johan.koolwaaij@mobidot.nl">contact person</a> together with the <code>sensing lib</code>.</p> </li>
+                </ul>
+                <p class="privacy-desc">Please follow these steps to start gathering mobility data and to access this enriched data via the MoveSmarter API:
+                <ul>
+                    <li> <p class="privacy-desc">Register a new app under https://www.movesmarter.nl/portal/appdev/and use the <code>sensing lib</code> by sending a mail to the <a href="mailto:johan.koolwaaij@mobidot.nl">contact person</a> of <i>Mobidot</i>. Alternatively, you could also request a version of the existing <i>MoveSmarter Beta App</i> which already has the sensing lib embedded.</p> </li>
+                    <li> <p class="privacy-desc">Log in with your username and credentials, and mention <i>3cixty</i> as domain and start collecting data.</p> </li>
+                    <li> <p class="privacy-desc">Read the documentation at <a href="https://www.movesmarter.nl/portal/appdev/test">https://www.movesmarter.nl/portal/appdev/test</a> where you can both testdrive specific API calls and make yourself familiar with the API call signatures, inputs and outputs. There is both an <code>oAuth-based</code> and an <code>API key-based</code> access method, both are described under the developer tab. These APIs can be extended if you have specific requests for data that is available but not yet exposed via these interfaces.</p> </li>
+                        <ul>
+                            <li> <p class="privacy-desc"> <code>IdentityManager</code>: manages users, groups and domains</p> </li>
+                            <li> <p class="privacy-desc"> <code>MeasurementService</code>: stores the actual trip and location data</p> </li>
+                            <li> <p class="privacy-desc"><code>PersonalMobility</code>: analyzes trip data and creates long-term personal and community patterns of mobility</p> </li>
+                            <li> <p class="privacy-desc"><code>IncentiveManager</code>: allows to provide timely and targeted incentives based on mobility behaviour (not used for 3cixty)</p> </li>
+                        </ul>
+                    <li> <p class="privacy-desc">New users and groups can be added at <a href="https://www.movesmarter.nl/portal/domainadmin/">https://www.movesmarter.nl/portal/domainadmin/</a></p> </li>
+                    <li> <p class="privacy-desc"> Personal mobility information can be inspected at the <i>Mobility Footprint</i> tab, like the list of trips at <a href="https://www.movesmarter.nl/portal/personal/trips">https://www.movesmarter.nl/portal/personal/trips</a></p></li>
+                </ul>
+                <p class="privacy-desc">Documentation is available at <a href="https://www.movesmarter.nl/portal/appdev/test">https://www.movesmarter.nl/portal/appdev/test</a> where you can both testdrive specific API calls and make yourself familiar with the API call signatures, inputs and outputs. There is both an oAuth-based and an API key-based access method, both are described under the developer tab. <b>Note that you will need to create a separate developer login there</b>.</p>
+                <p class="privacy-desc"> Normal way of working is to:</p>
+                <ul>
+                    <li><p class="privacy-desc"> Use the provided java classes (in the <code>Mobidot_java_classes.zip</code> file)</p></li>
+                    <li><p class="privacy-desc">Do a call on the <i>Movesmarter</i> API</p></li>
+                    <li><p class="privacy-desc"> Serialize the JSON response to the appropriate java classes</p></li>
+                    <li><p class="privacy-desc">Use the information from the obtained java instance</p></li>
+                </ul>
+                
+                <p class="privacy-desc">See the "MobidotIntegrationAPI" document in the 3cixty API docs for some shortcuts on using the above API with your <i>3cixty</i> related apps.</p>
+                <p class="privacy-desc">The <code>sensing lib</code> is available on request from the Mobidot [contact person](johan.koolwaaij@mobidot.nl). Note that you are <b>not allowed to</b> redistribute it to other persons or parties. The <code>sensing lib</code> is available for both Android and iPhone. The documentation of the <code>sensing lib</code> is also provided in the documentation file attached to the <code>sensing lib</code> (named <code>Mobidot_sensing_lib_doc.rar</code>).</p>
+                <p class="privacy-desc">The MoveSmarter Measurement API runs at:</p>
+                <ul>
+                    <li><p class="privacy-desc"><a href="https://www.movesmarter.nl/external/measurement">https://www.movesmarter.nl/external/measurement</a>  (external)</p></li>
+                 <li><p class="privacy-desc"> <a href="https://www.movesmarter.nl/api/measurement">https://www.movesmarter.nl/api/measurement </a>  (oAuth)</p></li>
+                 </ul>
+                
+                <p class="privacy-desc">The MoveSmarter PersonalMobility API runs at:</p>
+                <ul>
+                    <li><p class="privacy-desc"> <a href="https://www.movesmarter.nl/external/personalmobility">https://www.movesmarter.nl/external/personalmobility </a>   (external)</p></li>
+                    <li><p class="privacy-desc"> <a href="https://www.movesmarter.nl/api/personalmobility">https://www.movesmarter.nl/api/personalmobility </a>  (oAuth)</p></li>
+                </ul>
+                <p class="privacy-desc">The <code>MoveSmarter sensing lib</code> comes as a native library including documentation of its API and a usage example.</p>
+                
+				<br>
+                
+                <h3 class="privacy-title">Some notations used in the document are:</h3>
+				<table border="0pt" width=500 align="centre">
+                    <tr>
+                        <th>Notations</th>
+                        <th>Full Form</th>
+                    </tr>
+                    <tr>
+                        <td><p class="privacy-desc">KB</p></td>
+                        <td><p class="privacy-desc">3cixty Knowledgebase</p></td>
+                    </tr>
+                    <tr>
+                        <td><p class="privacy-desc">POI or PoI</p></td>
+                        <td><p class="privacy-desc">Place of interest</p></td>
+                    </tr>
+
+                    </table>
+                <br>
+                
+                As of October 2015
+            </article>
+		</div>
+	</section>
+	<div id="footer">
+		<div class="wrapper">
+			<div class="left footer-menu">
+				<span>&copy 2015, 3cixty. All rights reserved</span>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
