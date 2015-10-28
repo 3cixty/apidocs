@@ -1,7 +1,7 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "3cixty APIs\n\nGetting Started:\n\n - To get started depending on your needs you either need `3cixty App Key` or `3cixty access_token` or `Google access_token` or `Facebook access_token`. The only APIs where above mentioned parameters are not required are [validate sparql query conformity with sparql 1.1 API]() and [know scopes in 3cixty API]().\n - To get the `3cixty App Key` please use the [link](appchallenge) alternatviely you can also use the [getAppKey]() API below. In such a case you will need your google access token please open [https://api.3cixty.com/v2/googleToken.jsp](https://api.3cixty.com/v2/googleToken.jsp) on your web browser to get your `Google access_token`.\n - Once you have the `3cixty App key` please use the API as need. Note that some APIs use `3cixty access_token` while some need `Google access_token`. To get your `3cixty access_token` from `Google access_token` use the [/getAccessToken]() API. \n   \n",
+        "description": "An overview of 3cixty APIs is provided here.\n\n**Getting Started:**\n\n - To get started depending on your needs you either need `3cixty App Key` or `3cixty access_token` or `Google access_token` or `Facebook access_token`. The only APIs where above mentioned parameters are not required are `/validate` (validate sparql query conformity with sparql 1.1) and `/getScope` (know scopes in 3cixty API).\n - To get the `3cixty App Key` please use the [link](appchallenge) alternatviely you can also use the `/getAppKey` API below. In such a case you will need your google access token please open [https://api.3cixty.com/v2/googleToken.jsp](https://api.3cixty.com/v2/googleToken.jsp) on your web browser to get your `Google access_token`.\n - Once you have the `3cixty App key` please use the API as need. Note that some APIs use `3cixty access_token` while some need `Google access_token`. To get your `3cixty access_token` from `Google access_token` use the `/getAccessToken` API.\n   \n   \n Below are the Java code steps to be performed to successfully call the API you need\n \n - **Step 1**: use following code and specify the `<API>` parameter.\n \n   <pre class=\"brush: java\">\n   URL url = new URL(\"https:\\\\api.3cixty.com\\v2\\&lt;API&gt;\"));\n   </pre>\n \n - **Step 2**: create the url connection as below. Here `<TYPE>` is either `GET` or `POST`\n \n   <pre class=\"brush: java\">\n   URLConnection urlConn = url.openConnection();\n   ((HttpURLConnection) urlConn).setRequestMethod(\"&ltTYPE&gt\");\n   </pre>\n \n - **Step 3**: Based on what parameters are required by the `<API>`, you need to either set the following:\n \n   - for header paramaters\n     <pre class=\"brush: java\">\n     con.setRequestProperty(\"access_token\", &lt;ThreeCixtyAccessToken&gt;);\n     //similary set other header parameters\n     ...\n     </pre>\n   \n   - for query parameters in the **Step 1**  provide the paramters in the `URL` itself. For example:\n     <pre class=\"brush: java\">\n     URL url = new URL(\"https:\\\\api.3cixty.com\\v2\\&lt;API&gt;?\n       google_access_token=\"&lt;googleAccessToken&gt;\" + \n       \"&amp;appid=\" + &lt;appid&gt; +\n       \"&amp;appname=\" + URLEncoder.encode(&lt;appname&gt;, \"UTF-8\") +\n       \"&amp;category=\" + URLEncoder.encode(&lt;cat&gt;, \"UTF-8\")+\n       \"&amp;scopeName=\" + URLEncoder.encode(&lt;scope&gt;, \"UTF-8\") + \n       \"&amp;description=\" + URLEncoder.encode(&lt;desc&gt;, \"UTF-8\") +\n       \"&amp;redirect_uri=\" + URLEncoder.encode(&lt;redirect_uri&gt;, \"UTF-8\") + \n       \"&amp;thumbNailUrl=\" + URLEncoder.encode(&lt;thumbNailUrl&gt;, \"UTF-8\"))\"));\n     </pre>\n   \n   - for `JSON` input in the body use:\n   \n     <pre class=\"brush: java\">\n     String jsonString=\"&lt;json&gt;\";\n     </pre>\n \n - **Step 4**: Depending on the above step, \n   \n   - for `JSON` as the input, use: \n     <pre class=\"brush: java\">\n     OutputStreamWriter writer = new OutputStreamWriter(urlConn.getOutputStream());\n     writer.write(jsonString.getBytes(UTF8));\n     </pre>\n   \n   - for other case, use:\n     <pre class=\"brush: java\">\n     InputStream input = urlConn.getInputStream();\n     StringBuffer buffer = new StringBuffer();\n     byte[] b = new byte[1024];\n     int readBytes = 0;\n     while (true) { \n       readBytes = input.read(b);\n       if (readBytes &lt; 0) break;\n       buffer.append(new String(b, 0, readBytes));\n     }\n     input.close();\n     JSONObject json = new JSONObject(buffer.toString());\n     ...\n   </pre>\n",
         "version": "2.0.0",
         "title": "3cixty APIs",
         "contact": {
@@ -15,10 +15,10 @@
             "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
         }
     },
-    "host": "dev.3cixty.com",
+    "host": “dev.3cixty.com”,
     "basePath": "/v2",
     "schemes": [
-        "https"
+        "https”
     ],
     "paths": {
         "/augmentAndExecute": {
@@ -1851,7 +1851,7 @@
                     "WishList API - REST API"
                 ],
                 "summary": "Perform action on the Wish List",
-                "description": "(Additions to what is described above), depending on the action chosen (`add_tray_element`, `update_tray_element`, `get_tray_elements`, `login_tray`, `empty_tray`, `get_tray_elements_in_details`) the following json elements should be submitted.\nFor `action` = `add_tray_element`, following lists properties are required (should be provided):\n  - **Required properties**: `action`, `key`, `element_id`, `element_type`, `element_title`, `image_url`,  `token`, `source`\n\nFor `action` = `update_tray_element`, following lists properties are either required (should be provided) or optionals:\n  - **Required properties**: `action`, `key`, `element_id`, `element_type`, `element_title`, `token`, `source`\n  - **Optional properties**: `delete`, `attend`, `attend_datetime`, `rating`\n  \nFor `action` = `get_tray_elements`, following lists properties are either required (should be provided) or optionals:\n  - **Required properties**: `action`, `key`, `token`\n  - **Optional properties**: `offset`, `limit`, `order_type`, `show_past_events`\n\nFor `action` = `login_tray`, following lists properties are required (should be provided):\n  - **Required properties**: `action`, `key`, `junk_token`, `three_cixty_token`\n\nFor `action` = `empty_tray`, following lists properties are required (should be provided):\n  - **Required properties**: `action`, `key`, `token`\n\nFor `action` = `get_tray_elements_in_details`, following lists properties are either required (should be provided) or optionals:\n  - **Required properties**: `action`, `key`, `token`\n  - **Optional properties**: `offset`, `limit`, `order_type`, `show_past_events`, `language`\n\nHere, following is the description of the properties mentioned above\n  - `key` has the value which is the `3cixty App Key` of the application.\n  - `token` has the value which is either a `3cixty access_token` or a `junk token`. If a junk token is provided the item will not appear in any specific user *Wish List*. It is only when the user signs in to the `3cixty` Platform the item is associated to the user. \n  - `element_type` has the value which is either `POI` or `Event`.\n  - `attend_datetime` has the value which is a string with template `dd-MM-yyyy HH:mm`, for example `08-09-2014 10:00`.\n  - `order_type` has the value which is either `Asc` or `Desc` with the default value being `Desc`. The *Wish List* items are ordered based on the time they were entered in the *Wish List*.\n  - `language` has the value which is either `en`, `it`, `en-EN`, `it-IT` with the default value being `en`.\n  - `attend` is a boolean that signifies if the item was visited or not.\n  - `show_past_events` is a boolean\n  - `offset` is a number with a default value of 0\n  - `limit` is a number with a default value of 100\n  - `junk_token` is a junk token in a string format.\n  - `three_cixty_token` has the value which is a `3cixty access_token`.\n  - `rating` is a value from 0 to 5 given to the item.\n  - `element_id` is the id of the item.\n  - `image_url` url of the image of the item.\n  - `element_title` title of the item.\n  - `delete` whether to delete the item or not.\n  \nSample `json` object\n  ```json\n  {\n    \"key\":\"<key>\", \n    \"token\":\"<token>\", \n    \"action\": \"update_tray_element\", \n    \"element_id\": \"http://data.linkedevents.org/event/c78b678b-c51a-458f-8137-7f35abda121d\",\n    \"element_type\": \"Event\", \n    \"source\": \"ExlorationApp+1.0\", \n    \"delete\": \"true\"\n  }\n  ```\n  \nFor `action`: `add_tray_element`, `update_tray_element` and `empty_tray` the returns HTTP response is a `JSON` that is of the format `{\"response\": \"OK\"}`\n\nFor `action`: `get_tray_element`, `login_tray` the returns HTTP response is a `JSON` that is of the format \n```json\n  [\n    { \n      \"element_id\": \"ID_00001\",\n      \"element_type\": \"events\",\n      \"element_title\": \"Title 00001\", \n      \"timestamp\": 122454544574, \n      \"token\": \"junk00001\", \n      \"source\": \"Exploration\", \n      \"attend\": false, \n      \"attend_datetime\": \"08-12-2014 10:00\", \n      \"rating\": -1, \n      \"image_url\": \n      \"dumb link1\" \n    }\n  ]\n  ```\n\nFor `action`: `get_tray_elements_in_details` the returns HTTP response is a `JSON` that is of the format \n```json\n [\n  { \n    \"type\": \"Event\",\n    \"address\": \"<address>\",\n    \"image_url\": \"<imageURL>\",\n    \"locality\": \"<locality>\",\n    \"name\": \"<name>\",\n    \"description\": \"<description>\",\n  \t\"lon\": \"<longitude>\",\n  \t\"time_end\": \"<timeEventEnds>\",\n  \t\"source\": \"<sourceURL>\",\n  \t\"id\": \"<ID>\",\n  \t\"category\": \"<category>\",\n  \t\"time_beginning\": \"<StartingTimeOfEvent>\",\n  \t\"lat\": \"<latitude>\",\n  \t\"translation\": true,\n    \"url\": \"<EventURL>\",\n    \"creationTimestamp\": 0,\n    \"rating\": -1,\n    \"attend_datetime\": \"<attendDatetime>\"\n   },\n   {  \n    \"type\": \"POI\",\n    \"aggregate_rating\": 0,\n    \"reviews\": [  \"<review1>\" ],\n    \"reviewTranslations\": [true],\n    \"image_url\": \"<imageURL>\",\n    \"name\": \"<name>\",\n    \"description\": \"<description>\",\n    \"telephone\": \"<telephoneNumber>\",\n    \"lon\": \"<longitude>\",\n    \"source\": \"<sourceURL>\",\n  \t\"id\": \"<ID>\",\n    \"review_counts\": 1,\n    \"lat\": \"<latitude>\",\n  \t\"translation\": true,\n    \"url\": \"<POIURL>\",\n    \"creationTimestamp\": 0,\n    \"rating\": -1,\n    \"attend_datetime\": \"<attendDatetime>\"\n     }\n  ]\n  ```\nJava code to call the api\n  \n<pre class=\"brush: java\">\n  URL url = new URL(\"&lt;API&gt;\"));\n  URLConnection urlConn = url.openConnection();\n  ((HttpURLConnection) urlConn).setRequestMethod(\"POST\");\n  String jsonString=\"&lt;json&gt;\";\n  OutputStreamWriter writer = new OutputStreamWriter(urlConn.getOutputStream());\n  writer.write(jsonString.getBytes(UTF8));\n  InputStream input = urlConn.getInputStream();\n  StringBuffer buffer = new StringBuffer();\n  byte[] b = new byte[1024];\n  int readBytes = 0;\n  while (true) { \n    readBytes = input.read(b);\n    if (readBytes &lt; 0) break;\n    buffer.append(new String(b, 0, readBytes));\n  }\n  input.close();\n  JSONObject json = new JSONObject(buffer.toString());\n  if (json.getString(\"response\").equals(\"successful\")) {\n    System.out.println(\"Successful\");\n  } else {\n    System.out.println(\"Failed\");\n  }\n  </pre>\n",
+                "description": "(Additions to what is described above), depending on the action chosen (`add_tray_element`, `update_tray_element`, `get_tray_elements`, `login_tray`, `empty_tray`, `get_tray_elements_in_details`) the following json elements should be submitted.\nFor `action` = `add_tray_element`, following lists properties are required (should be provided):\n  - **Required properties**: `action`, `key`, `element_id`, `element_type`, `element_title`, `image_url`,  `token`, `source`\n\nFor `action` = `update_tray_element`, following lists properties are either required (should be provided) or optionals:\n  - **Required properties**: `action`, `key`, `element_id`, `element_type`, `element_title`, `token`, `source`\n  - **Optional properties**: `delete`, `attend`, `attend_datetime`, `rating`\n  \nFor `action` = `get_tray_elements`, following lists properties are either required (should be provided) or optionals:\n  - **Required properties**: `action`, `key`, `token`\n  - **Optional properties**: `offset`, `limit`, `order_type`, `show_past_events`\n\nFor `action` = `login_tray`, following lists properties are required (should be provided):\n  - **Required properties**: `action`, `key`, `junk_token`, `three_cixty_token`\n\nFor `action` = `empty_tray`, following lists properties are required (should be provided):\n  - **Required properties**: `action`, `key`, `token`\n\nFor `action` = `get_tray_elements_in_details`, following lists properties are either required (should be provided) or optionals:\n  - **Required properties**: `action`, `key`, `token`\n  - **Optional properties**: `offset`, `limit`, `order_type`, `show_past_events`, `language`\n\nHere, following is the description of the properties mentioned above\n  - `key` has the value which is the `3cixty App Key` of the application.\n  - `token` has the value which is either a `3cixty access_token` or a `junk token`. If a junk token is provided the item will not appear in any specific user *Wish List*. It is only when the user signs in to the `3cixty` Platform the item is associated to the user. \n  - `element_type` has the value which is either `POI` or `Event`.\n  - `attend_datetime` has the value which is a string with template `dd-MM-yyyy HH:mm`, for example `08-09-2014 10:00`.\n  - `order_type` has the value which is either `Asc` or `Desc` with the default value being `Desc`. The *Wish List* items are ordered based on the time they were entered in the *Wish List*.\n  - `language` has the value which is either `en`, `it`, `en-EN`, `it-IT` with the default value being `en`.\n  - `attend` is a boolean that signifies if the item was visited or not.\n  - `show_past_events` is a boolean\n  - `offset` is a number with a default value of 0\n  - `limit` is a number with a default value of 100\n  - `junk_token` is a junk token in a string format.\n  - `three_cixty_token` has the value which is a `3cixty access_token`.\n  - `rating` is a value from 0 to 5 given to the item.\n  - `element_id` is the id of the item.\n  - `image_url` url of the image of the item.\n  - `element_title` title of the item.\n  - `delete` whether to delete the item or not.\n  \nSample `json` object\n  ```json\n  {\n    \"key\":\"<key>\", \n    \"token\":\"<token>\", \n    \"action\": \"update_tray_element\", \n    \"element_id\": \"http://data.linkedevents.org/event/c78b678b-c51a-458f-8137-7f35abda121d\",\n    \"element_type\": \"Event\", \n    \"source\": \"ExlorationApp+1.0\", \n    \"delete\": \"true\"\n  }\n  ```\n  \nFor `action`: `add_tray_element`, `update_tray_element` and `empty_tray` the returns HTTP response is a `JSON` that is of the format `{\"response\": \"OK\"}`\n\nFor `action`: `get_tray_element`, `login_tray` the returns HTTP response is a `JSON` that is of the format \n```json\n  [\n    { \n      \"element_id\": \"ID_00001\",\n      \"element_type\": \"events\",\n      \"element_title\": \"Title 00001\", \n      \"timestamp\": 122454544574, \n      \"token\": \"junk00001\", \n      \"source\": \"Exploration\", \n      \"attend\": false, \n      \"attend_datetime\": \"08-12-2014 10:00\", \n      \"rating\": -1, \n      \"image_url\": \n      \"dumb link1\" \n    }\n  ]\n  ```\n\nFor `action`: `get_tray_elements_in_details` the returns HTTP response is a `JSON` that is of the format \n```json\n [\n  { \n    \"type\": \"Event\",\n    \"address\": \"<address>\",\n    \"image_url\": \"<imageURL>\",\n    \"locality\": \"<locality>\",\n    \"name\": \"<name>\",\n    \"description\": \"<description>\",\n  \t\"lon\": \"<longitude>\",\n  \t\"time_end\": \"<timeEventEnds>\",\n  \t\"source\": \"<sourceURL>\",\n  \t\"id\": \"<ID>\",\n  \t\"category\": \"<category>\",\n  \t\"time_beginning\": \"<StartingTimeOfEvent>\",\n  \t\"lat\": \"<latitude>\",\n  \t\"translation\": true,\n    \"url\": \"<EventURL>\",\n    \"creationTimestamp\": 0,\n    \"rating\": -1,\n    \"attend_datetime\": \"<attendDatetime>\"\n   },\n   {  \n    \"type\": \"POI\",\n    \"aggregate_rating\": 0,\n    \"reviews\": [  \"<review1>\" ],\n    \"reviewTranslations\": [true],\n    \"image_url\": \"<imageURL>\",\n    \"name\": \"<name>\",\n    \"description\": \"<description>\",\n    \"telephone\": \"<telephoneNumber>\",\n    \"lon\": \"<longitude>\",\n    \"source\": \"<sourceURL>\",\n  \t\"id\": \"<ID>\",\n    \"review_counts\": 1,\n    \"lat\": \"<latitude>\",\n  \t\"translation\": true,\n    \"url\": \"<POIURL>\",\n    \"creationTimestamp\": 0,\n    \"rating\": -1,\n    \"attend_datetime\": \"<attendDatetime>\"\n     }\n  ]\n  ```\n",
                 "produces": [
                     "application/json"
                 ],
@@ -2015,7 +2015,7 @@
                     "Feedback API - REST API"
                 ],
                 "summary": "Send feedback",
-                "description": "This API helps developers to send user feedback to `3cixty` Platform. This API can be used by mobile clients to report user feedback from within the apps. The feedbacks are stored on the platform for later retrieval by the person in charge or analysing the issues.\n  \nThis API requires a `JSON` input of the following format\n```json\n  {\n    \"clientTimeStamp\": \"<clientTimeStamp>\",\n    \"clientVersion\": \"<clientVersion>\",\n    \"reason\": \"<reason>\",\n    \"userToken\": \"<userToken>\",\n    \"key\": \"<Appkey>\",\n    \"otherReasonText\": \"<otherReasonText>\",\n    \"lastPage\": \"<lastPage>\", \n    \"lastElement\": \"<lastElement>\", \n    \"lastPosition\": \"<lastPosition>\"\n  }\n  ```\nHere:\n\n  - `clientTimeStamp`: This is a **required** parameter. It is `xsd:dateTime`, with timeZone, for example: \"2002-10-10T12:00:00-05:00\".\n  - `clientVersion`: This is a **required** parameter. It is a string, for example \"Android-1.4\". \n  - `reason`: This is a **required** parameter. It is a string that can be: \n      - `WRONG_DATA`: in case the user presses the GUI button to report that the event/POI data he's looking at on the screen looks wrong. For example: item title is empty/null.\n      - `CRASH`: user wants to report a crash happened on the mobile app.\n      - `LOGIN`: user has problems to login with his account.\n      - `OTHER`: used to report any other feedback, detailed using a free-text box on the GUI. If `OTHER` is selected, then `otherReasonText` should also be provided and `otherReasonText` cannot be null.\n  - `otherReasonText`: it is a string that specifies a reason not listed by WRONG_DATA, CRASH or LOGIN. Sample `<otherReasonText>` is \"the map view does not work!!!\".\n  - `userToken`: it is the `3cixty access_token`. Either `userToken` or `key` should be specified.\n  - `key`: it is the `3cixty App Key`. Either `userToken` or `key` should be specified.\n  - `lastPage`: is class of the last app view used. It is a string. for example \"`com.3cixty.client.NavigationPage`\".\n  - `lastElement`: is the ID of the Event or the POI the user was looking at. It is a string.\n  - `lastPosition`: is the position (lat, lon in `WGS84`, double) and accuracy (in meters, double) of the user's last position. For example [45.477760, 9.234779,3000].\n\n  \n  Below is the sample `Json` object\n  \n  ```JSON\n    {\n      \"clientTimeStamp\": \"2002-10-10T12:00:00-05:00\",\n      \"clientVersion\": \"Android-1.4\", \n      \"reason\": \"WRONG_DATA\", \n      \"userToken\": \"1234xyz\", \n      \"lastPage\": \"com.3cixty.client.NavigationPage\", \n      \"lastElement\": \"xyz568568\", \n      \"lastPosition\": [45.477760, 9.234779,3000] \n    }\n  ```\n  \n  Below is the Java code to call the API\n  \n  <pre class=\"brush: java\">\n  URL url = new URL(\"&lt;API&gt;\"));\n  URLConnection urlConn = url.openConnection();\n  ((HttpURLConnection) urlConn).setRequestMethod(\"POST\");\n  String jsonString=\"&lt;json&gt;\";\n  OutputStreamWriter writer = new OutputStreamWriter(urlConn.getOutputStream());\n  writer.write(jsonString.getBytes(UTF8));\n  InputStream input = urlConn.getInputStream();\n  StringBuffer buffer = new StringBuffer();\n  byte[] b = new byte[1024];\n  int readBytes = 0;\n  while (true) { \n    readBytes = input.read(b);\n    if (readBytes &lt; 0) break;\n    buffer.append(new String(b, 0, readBytes));\n  }\n  input.close();\n  ...\n  </pre>\n",
+                "description": "This API helps developers to send user feedback to `3cixty` Platform. This API can be used by mobile clients to report user feedback from within the apps. The feedbacks are stored on the platform for later retrieval by the person in charge or analysing the issues.\n  \nThis API requires a `JSON` input of the following format\n```json\n  {\n    \"clientTimeStamp\": \"<clientTimeStamp>\",\n    \"clientVersion\": \"<clientVersion>\",\n    \"reason\": \"<reason>\",\n    \"userToken\": \"<userToken>\",\n    \"key\": \"<Appkey>\",\n    \"otherReasonText\": \"<otherReasonText>\",\n    \"lastPage\": \"<lastPage>\", \n    \"lastElement\": \"<lastElement>\", \n    \"lastPosition\": \"<lastPosition>\"\n  }\n  ```\nHere:\n\n  - `clientTimeStamp`: This is a **required** parameter. It is `xsd:dateTime`, with timeZone, for example: \"2002-10-10T12:00:00-05:00\".\n  - `clientVersion`: This is a **required** parameter. It is a string, for example \"Android-1.4\". \n  - `reason`: This is a **required** parameter. It is a string that can be: \n      - `WRONG_DATA`: in case the user presses the GUI button to report that the event/POI data he's looking at on the screen looks wrong. For example: item title is empty/null.\n      - `CRASH`: user wants to report a crash happened on the mobile app.\n      - `LOGIN`: user has problems to login with his account.\n      - `OTHER`: used to report any other feedback, detailed using a free-text box on the GUI. If `OTHER` is selected, then `otherReasonText` should also be provided and `otherReasonText` cannot be null.\n  - `otherReasonText`: it is a string that specifies a reason not listed by WRONG_DATA, CRASH or LOGIN. Sample `<otherReasonText>` is \"the map view does not work!!!\".\n  - `userToken`: it is the `3cixty access_token`. Either `userToken` or `key` should be specified.\n  - `key`: it is the `3cixty App Key`. Either `userToken` or `key` should be specified.\n  - `lastPage`: is class of the last app view used. It is a string. for example \"`com.3cixty.client.NavigationPage`\".\n  - `lastElement`: is the ID of the Event or the POI the user was looking at. It is a string.\n  - `lastPosition`: is the position (lat, lon in `WGS84`, double) and accuracy (in meters, double) of the user's last position. For example [45.477760, 9.234779,3000].\n\n  \n  Below is the sample `Json` object\n  \n  ```JSON\n    {\n      \"clientTimeStamp\": \"2002-10-10T12:00:00-05:00\",\n      \"clientVersion\": \"Android-1.4\", \n      \"reason\": \"WRONG_DATA\", \n      \"userToken\": \"1234xyz\", \n      \"lastPage\": \"com.3cixty.client.NavigationPage\", \n      \"lastElement\": \"xyz568568\", \n      \"lastPosition\": [45.477760, 9.234779,3000] \n    }\n  ```\n",
                 "produces": [
                     "text/html"
                 ],
@@ -2109,7 +2109,7 @@
                     "MoveSmarterIntegration API - REST API"
                 ],
                 "summary": "Get MoveSmarter user account credentials",
-                "description": "If there exists an account corresponding with a given `3cixty access_token`, the API will return the `MoveSmarter` account of the user; otherwise, the API tries to create a new account on MoveSmarter server. If this creation is successful, the API will return the new account; otherwise, the API return an empty `JSON` string `{}`\n\n  The return of the HTTP request is in `JSON` format is based on the `3cixty access_token` input:\n  For valid `3cixty access_token`: \n  - If there exists a `MoveSmarter` account, the return message follows the structure `{\"username\": \"<username>\", \"password\": \"<password>\"}` with the `HTTP code status = 200`.\n  - if there does not exists a `MoveSmarter` account, the API tries to create the account.\n    - on a successful creation `{\"username\": \"<username>\", \"password\": \"<password>\"}` is returned with `HTTP code status = 200`.\n    - If an error occurs the return message is `{}`.\n  \n  For Invalid `3cixty access_token`: `HTTP status code = 400` is returned with message `The access token is invalid`.\n\n  Java code to call the api\n  \n  <pre class=\"brush: java\">\n  URL url = new URL(\"&lt;API&gt;\");\n  HttpsURLConnection con = (HttpsURLConnection) url.openConnection();\n  con.setRequestMethod(\"GET\");\n  con.setRequestProperty(\"access_token\", &lt;ThreeCixtyAccessToken&gt;);\n  InputStream input = con.getInputStream();\n  StringBuffer buffer = new StringBuffer();\n  byte[] b = new byte[1024];\n  int readBytes = 0;\n  while (true) { \n    readBytes = input.read(b);\n    if (readBytes &lt; 0) break;\n    buffer.append(new String(b, 0, readBytes));\n  }\n  input.close();\n  ...\n  </pre>\n",
+                "description": "If there exists an account corresponding with a given `3cixty access_token`, the API will return the `MoveSmarter` account of the user; otherwise, the API tries to create a new account on MoveSmarter server. If this creation is successful, the API will return the new account; otherwise, the API return an empty `JSON` string `{}`\n\n  The return of the HTTP request is in `JSON` format is based on the `3cixty access_token` input:\n  For valid `3cixty access_token`: \n  - If there exists a `MoveSmarter` account, the return message follows the structure `{\"username\": \"<username>\", \"password\": \"<password>\"}` with the `HTTP code status = 200`.\n  - if there does not exists a `MoveSmarter` account, the API tries to create the account.\n    - on a successful creation `{\"username\": \"<username>\", \"password\": \"<password>\"}` is returned with `HTTP code status = 200`.\n    - If an error occurs the return message is `{}`.\n  \n  For Invalid `3cixty access_token`: `HTTP status code = 400` is returned with message `The access token is invalid`.\n",
                 "produces": [
                     "application/json"
                 ],
@@ -2166,7 +2166,7 @@
                     "MoveSmarterIntegration API - REST API"
                 ],
                 "summary": "Get MoveSmarter one time use token for user",
-                "description": "This API creates a `MoveSmarter` account if there doesn't exist before invoking it. If successful to get a token from `MoveSmarter` server, this API will return `MoveSmarter` token and expiration in a `JSON` format. If failed, this API will respond with `HTTP status code = 400` and relevant error message.\n\n The return of your HTTP request in `JSON` format is based on your `3cixty access_token` input:\n   \n For valid access_token:\n \n - If the API is able to get a `MoveSmarter` token, it will send back a `JSON` string like: \n         \n     ```json\n     {\n       \"timeLeft\": <timeleft>\n       \"token\": \"<token>\"\n     }\n     ```\n \n   Here:\n   - `timeLeft` is the remaining time where the corresponding `MoveSmarter` token is still valid. This value is in second.\n     Note that, the maximum timeLeft value is `7200`.\n     \n   - Otherwise, the API returns `HTTP status code = 400`.\n   \n For Invalid `3cixty access_token`: HTTP code status is 400 with message \"The access token is invalid\".\n\n Java code to call the api\n \n <pre class=\"brush: java\">\n   URL url = new URL(\"&lt;API&gt;\");\n   HttpsURLConnection con = (HttpsURLConnection) url.openConnection();\n   con.setRequestMethod(\"GET\");\n   con.setRequestProperty(\"access_token\",&lt;ThreeCixtyAccessToken&gt;);\n   InputStream input = con.getInputStream();\n   StringBuffer buffer = new StringBuffer();\n   byte[] b = new byte[1024];\n   int readBytes = 0;\n   while (true) { \n     readBytes = input.read(b);\n     if (readBytes &lt; 0) break;\n     buffer.append(new String(b, 0, readBytes));\n   }\n   input.close();\n   ...\n </pre>\n",
+                "description": "This API creates a `MoveSmarter` account if there doesn't exist before invoking it. If successful to get a token from `MoveSmarter` server, this API will return `MoveSmarter` token and expiration in a `JSON` format. If failed, this API will respond with `HTTP status code = 400` and relevant error message.\n\n The return of your HTTP request in `JSON` format is based on your `3cixty access_token` input:\n   \n For valid access_token:\n \n - If the API is able to get a `MoveSmarter` token, it will send back a `JSON` string like: \n         \n     ```json\n     {\n       \"timeLeft\": <timeleft>\n       \"token\": \"<token>\"\n     }\n     ```\n \n   Here:\n   - `timeLeft` is the remaining time where the corresponding `MoveSmarter` token is still valid. This value is in second.\n     Note that, the maximum timeLeft value is `7200`.\n     \n   - Otherwise, the API returns `HTTP status code = 400`.\n   \n For Invalid `3cixty access_token`: HTTP code status is 400 with message \"The access token is invalid\".\n",
                 "produces": [
                     "application/json"
                 ],
@@ -2217,7 +2217,7 @@
                     "GoflowIntegration API - REST API"
                 ],
                 "summary": "Register an App on GoFlow server",
-                "description": "**This API should not be used by App developers as this API is already referenced when you get a `3cixty App key`.**\n\nThe return of the HTTP request is in JSON format.\n- If the `HTTP status code = 400`, it means that the api failed to register your App.\n- If the `HTTP status code = 200`, it means that the api was successful to register your App.\n\nJava code to call the api\n<pre class=\"brush: java\">\n URL url = new URL(\"&lt;API&gt;\");\n HttpsURLConnection con = (HttpsURLConnection) url.openConnection();\n con.setRequestMethod(\"POST\");\n con.setRequestProperty(\"google_access_token\", &lt;googleAccessToken&gt;);\n con.setRequestProperty(\"key\", &lt;ThreeCixtyAppKey&gt;);\n InputStream input = con.getInputStream();\n StringBuffer buffer = new StringBuffer();\n byte[] b = new byte[1024];\n int readBytes = 0;\n while (true) { \n    readBytes = input.read(b);\n    if (readBytes &lt; 0) break;\n    buffer.append(new String(b, 0, readBytes));\n }\n input.close();\n // check whether or not you are successful to register your App on GoFlow\n</pre>\n",
+                "description": "**This API should not be used by App developers as this API is already referenced when you get a `3cixty App key`.**\n\nThe return of the HTTP request is in JSON format.\n- If the `HTTP status code = 400`, it means that the api failed to register your App.\n- If the `HTTP status code = 200`, it means that the api was successful to register your App.\n",
                 "produces": [
                     "application/json"
                 ],
@@ -2281,7 +2281,7 @@
                     "GoflowIntegration API - REST API"
                 ],
                 "summary": "Create or retrieve a GoFlow developer account credentials",
-                "description": "This API is used to create or retrieve a `GoFlow` account for developers to communicate with `GoFlow` server.\nThe return of HTTP request is in the JSON format.\n\n - If the `HTTP status code = 400`, it means the provided `3cixty access_token` is invalid\n - If the `HTTP status code = 200`, it means either:\n   - If your response text is an empty `JSON` object (equal to `{}`), it means the API failed to create or retrieve `GoFlow` account associated with the provided `3cixty access_token`.\n   - Otherwise the response `JSON` is of the following format: `{\"username\": \"<username>\", \"password\": \"<password>\", \"appid\": \"<appid>\"}` where the values `<username>` and `<password>` are `GoFlow` account information associated with the provided `3cixty access_token` and `<appid>` is the associated app of the developer.\n\nJava code to call the api\n<pre class=\"brush: java\">\n URL url = new URL(\"&lt;API&gt;\");\n HttpsURLConnection con = (HttpsURLConnection) url.openConnection();\n con.setRequestMethod(\"GET\");\n con.setRequestProperty(\"access_token\", &lt;ThreeCixtyAccessToken&gt;);\n InputStream input = con.getInputStream();\n StringBuffer buffer = new StringBuffer();\n  byte[] b = new byte[1024];\n  int readBytes = 0;\n  while (true) { \n     readBytes = input.read(b);\n     if (readBytes &lt; 0) break;\n     buffer.append(new String(b, 0, readBytes));\n  }\n  input.close();\n // check whether or not you are successful to create or retrieve GoFlow credentials\n</pre>\n",
+                "description": "This API is used to create or retrieve a `GoFlow` account for developers to communicate with `GoFlow` server.\nThe return of HTTP request is in the JSON format.\n\n - If the `HTTP status code = 400`, it means the provided `3cixty access_token` is invalid\n - If the `HTTP status code = 200`, it means either:\n   - If your response text is an empty `JSON` object (equal to `{}`), it means the API failed to create or retrieve `GoFlow` account associated with the provided `3cixty access_token`.\n   - Otherwise the response `JSON` is of the following format: `{\"username\": \"<username>\", \"password\": \"<password>\", \"appid\": \"<appid>\"}` where the values `<username>` and `<password>` are `GoFlow` account information associated with the provided `3cixty access_token` and `<appid>` is the associated app of the developer.\n",
                 "produces": [
                     "application/json"
                 ],
@@ -2346,7 +2346,7 @@
                     "GoflowIntegration API - REST API"
                 ],
                 "summary": "Create or retrieve a GoFlow user account credentials",
-                "description": "This api is used to create or retrieve a `GoFlow` user account based on a `3cixty access_token.\nThe return of HTTP request is in the JSON format.\n\n - If the `HTTP status code = 400`, it means the provided `3cixty access_token` is invalid\n - If the `HTTP status code = 200`, it means either:\n   - If your response text is an empty `JSON` object (equal to `{}`), it means the API failed to create or retrieve `GoFlow` account associated with the provided `3cixty access_token`.\n   - Otherwise the response `JSON` is of the following format: `{\"username\": \"<username>\", \"password\": \"<password>\", \"appid\": \"<appid>\"}` where the values `<username>` and `<password>` are `GoFlow` account information associated with the provided `3cixty access_token` and `<appid>` is the associated app used by the user.\n\nJava code to call the api\n<pre class=\"brush: java\">\n URL url = new URL(\"&lt;API&gt;\");\n HttpsURLConnection con = (HttpsURLConnection) url.openConnection();\n con.setRequestMethod(\"GET\");\n con.setRequestProperty(\"access_token\", &lt;ThreeCixtyAccessToken&gt;);\n InputStream input = con.getInputStream();\n StringBuffer buffer = new StringBuffer();\n  byte[] b = new byte[1024];\n  int readBytes = 0;\n  while (true) { \n     readBytes = input.read(b);\n     if (readBytes &lt; 0) break;\n     buffer.append(new String(b, 0, readBytes));\n  }\n  input.close();\n // check whether or not you are successful to retrieve GoFlow credentials\n</pre>\n",
+                "description": "This api is used to create or retrieve a `GoFlow` user account based on a `3cixty access_token.\nThe return of HTTP request is in the JSON format.\n\n - If the `HTTP status code = 400`, it means the provided `3cixty access_token` is invalid\n - If the `HTTP status code = 200`, it means either:\n   - If your response text is an empty `JSON` object (equal to `{}`), it means the API failed to create or retrieve `GoFlow` account associated with the provided `3cixty access_token`.\n   - Otherwise the response `JSON` is of the following format: `{\"username\": \"<username>\", \"password\": \"<password>\", \"appid\": \"<appid>\"}` where the values `<username>` and `<password>` are `GoFlow` account information associated with the provided `3cixty access_token` and `<appid>` is the associated app used by the user.\n",
                 "produces": [
                     "application/json"
                 ],
@@ -2411,7 +2411,7 @@
                     "Profile API - REST API"
                 ],
                 "summary": "Get User Profile Information",
-                "description": "The API is used to extract user personal information the is stored in the 3cixty Knowledgebase.\n \nThe return of request is in JSON format.\n - If the `HTTP status code = 200`, the response `JSON` is like `{\"uid\":\"<uid>\",\"firstName\":\"<firstName>\",\"lastName\":\"<lastName>\",\"latitude\":<latitude>,\"profileImage\":\"<ProfileimageURL>\",\"longitude\":<longitude>}`.\n - If the `HTTP status code = 400`, this could be due to permission denied by user or invalid `3cixty access_token`, etc. The return thus is either one of the following:\n    - You are not allowed to access the user profile.\n    - There is no information of your profile in the KB.\n    - The access token is invalid.\n\nJava code to call the api\n<pre class=\"brush: java\">\n   URL url = new URL(\"&lt;API&gt;\"));\n   URLConnection urlConn = url.openConnection();\n   urlConn.setRequestProperty(\"access_token\", &lt;ThreeCixtyAccessToken&gt;);\n   ((HttpURLConnection) urlConn).setRequestMethod(\"GET\");\n   InputStream input = urlConn.getInputStream();\n   StringBuffer buffer = new StringBuffer();\n   byte[] b = new byte[1024];\n   int readBytes = 0;\n   while (true) { \n     readBytes = input.read(b);\n     if (readBytes &lt; 0) break;\n     buffer.append(new String(b, 0, readBytes));\n   }\n   input.close();\n   JSONObject json = new JSONObject(buffer.toString());\n   </pre>\n",
+                "description": "The API is used to extract user personal information the is stored in the 3cixty Knowledgebase.\n \nThe return of request is in JSON format.\n - If the `HTTP status code = 200`, the response `JSON` is like `{\"uid\":\"<uid>\",\"firstName\":\"<firstName>\",\"lastName\":\"<lastName>\",\"latitude\":<latitude>,\"profileImage\":\"<ProfileimageURL>\",\"longitude\":<longitude>}`.\n - If the `HTTP status code = 400`, this could be due to permission denied by user or invalid `3cixty access_token`, etc. The return thus is either one of the following:\n    - You are not allowed to access the user profile.\n    - There is no information of your profile in the KB.\n    - The access token is invalid.\n",
                 "produces": [
                     "application/json"
                 ],
@@ -2478,7 +2478,7 @@
                     "Profile API - REST API"
                 ],
                 "summary": "Get the UserID from the 3cixty access_token",
-                "description": "The API is used to get 3cixty UID of the user from the `3cixty access_token`. \nThe return of your HTTP request is in `JSON` format.\n- If the `HTTP status code = 200` the response text is: `{\"uid\":\"<uid>\"}`.\n- If the `HTTP status code = 400`, the return is following:\n  - The access token is invalid\n\nJava code to call the api\n<pre class=\"brush: java\">\n   URL url = new URL(\"&lt;API&gt;\"));\n   URLConnection urlConn = url.openConnection();\n   urlConn.setRequestProperty(\"access_token\", &lt;ThreeCixtyAccessToken&gt;);\n   ((HttpURLConnection) urlConn).setRequestMethod(\"GET\");\n   InputStream input = urlConn.getInputStream();\n   StringBuffer buffer = new StringBuffer();\n   byte[] b = new byte[1024];\n   int readBytes = 0;\n   while (true) { \n     readBytes = input.read(b);\n     if (readBytes &lt; 0) break;\n     buffer.append(new String(b, 0, readBytes));\n   }\n   input.close();\n   JSONObject json = new JSONObject(buffer.toString());\n </pre>\n",
+                "description": "The API is used to get 3cixty UID of the user from the `3cixty access_token`. \nThe return of your HTTP request is in `JSON` format.\n- If the `HTTP status code = 200` the response text is: `{\"uid\":\"<uid>\"}`.\n- If the `HTTP status code = 400`, the return is following:\n  - The access token is invalid\n",
                 "produces": [
                     "application/json"
                 ],
@@ -2519,13 +2519,75 @@
                 }
             }
         },
+        "/getUserRelatedInformation": {
+            "get": {
+                "tags": [
+                    "Profile API - REST API - 3cixty Admin API - remove"
+                ],
+                "summary": "Get the App User information by 3cixty Admin",
+                "description": "This API provides the App User information to the 3cixty admin.\n",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "username",
+                        "in": "header",
+                        "description": "3cixty admin username.\n",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "password",
+                        "in": "header",
+                        "description": "3cixty admin password.\n",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "key",
+                        "in": "header",
+                        "description": "3cixty app key. This is needed to identify App user \n",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "uid",
+                        "in": "query",
+                        "description": "3cixty user ID for which all information is requested.\n",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "returns HTTP response in a JSON format that contains all information about the user or a message \"No information about the given 3cixty UID\"\n",
+                        "schema": {
+                            "type": "object"
+                        }
+                    },
+                    "400": {
+                        "description": "If the HTTP status code response is 400, the return is following:\n - Username & password are not correct\n",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "default": {
+                        "description": "internal error\n",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/getAppKey": {
             "get": {
                 "tags": [
                     "OAuth API - REST API"
                 ],
                 "summary": "Get/generate 3cixty App key",
-                "description": "This API is used to get `3cixty App key` by the developers. \n\nLet us now describe the parameters required:\n - `google_access_token`: Your `Google access_token`. You might get a `Google access_token` by calling the `3cixty` Google token endpoint.\n - `appid`: Your application identity. This value must be unique within the `3cixty` Platform. Typically, an appid could be a name like `com.sample.foo` or just anything (without any fullstops).\n - `appname`: Your application name, for example `3cixty Test App`.\n - `category`: Your application category. You might use one of the following values: `Exploration`, `MobileGuide`, and `AppChallenge`. For App Challenge developers, you should use the AppChallenge category for yours.\n - `description`: Your application description to explain about what your application does. \n - `redirect_uri`: A redirect uri for web applications. \n - `thumbNailUrl`: A logo link for web applications. This logo is used to show permission question to your users when your web application asks your users to grant permission to access to his private data. This value is not required for Android applications, but mandatory for Web applications.\n\nThe return of your HTTP request is in `JSON` format. If you are successful to get an app key, the 3cixty Platform will respond a message with the content as `{\"key\": \"<ThreeCixtyAppKey>\"}`; otherwise, you will receive 400 for HTTP status code and a text also the following `JSON` format `{\"response\": \"failed\", \"reason\": \"<reason>\"}` explaining you about errors.\n\nError reasons returned are:\n - AppId already existed or scopeName doesn't exist\n - Google access token is invalid or expired\n - appId only contains characters in the following patterns ^[a-z_A-Z0-9:\\\\-]*\n - Cannot register App on GoFlow server\n - appId already existed or scopeName doesn't exist\n\nJava code to call the api\n<pre class=\"brush: java\">\n URL url = new URL(\"&lt;API&gt;?google_access_token\n =\"googleAccessToken\" + &amp;appid=\" + appid + \"&amp;appname=\" + \n URLEncoder.encode(appname, \"UTF-8\") + \"&amp;category=\" + \n URLEncoder.encode(cat, \"UTF-8\")+ \"&amp;scopeName=\" + URLEncoder\n .encode(scope, \"UTF-8\") + \"&amp;description=\" + URLEncoder.encode\n (desc, \"UTF-8\") + \"&amp;redirect_uri=\" + URLEncoder.encode\n (redirect_uri, \"UTF-8\") + \"&amp;thumbNailUrl=\" + URLEncoder.encode\n (thumbNailUrl, \"UTF-8\"));\n InputStream input = url.openConnection().getInputStream();\n StringBuffer buffer = new StringBuffer();\n byte[] b = new byte[1024];\n int readBytes = 0;\n while (true) {\n \treadBytes = input.read(b);\n \tif (readBytes &lt; 0) break;\n \tbuffer.append(new String(b, 0, readBytes));\n }\n input.close();\n JSONObject json = new JSONObject(buffer.toString());\n if (json.has(\"key\")) {\n System.out.println(\"Your app secret is: \" + json.getString(\"key\"));\n } else {\n \tSystem.out.println(\"Failed to get app key: \" + json);\n }\n </pre>\n",
+                "description": "This API is used to get `3cixty App key` by the developers. \nLet us now describe the parameters required:\n - `google_access_token`: Your `Google access_token`. You might get a `Google access_token` by calling the `3cixty` Google token endpoint.\n - `appid`: Your application identity. This value must be unique within the `3cixty` Platform. Typically, an appid could be a name like `com.sample.foo` or just anything (without any fullstops).\n - `appname`: Your application name, for example `3cixty Test App`.\n - `category`: Your application category. You might use one of the following values: `Exploration`, `MobileGuide`, and `AppChallenge`. For App Challenge developers, you should use the AppChallenge category for yours.\n - `description`: Your application description to explain about what your application does. \n - `redirect_uri`: A redirect uri for web applications. \n - `thumbNailUrl`: A logo link for web applications. This logo is used to show permission question to your users when your web application asks your users to grant permission to access to his private data. This value is not required for Android applications, but mandatory for Web applications.\n\nThe return of your HTTP request is in `JSON` format. If you are successful to get an app key, the 3cixty Platform will respond a message with the content as `{\"key\": \"<ThreeCixtyAppKey>\"}`; otherwise, you will receive 400 for HTTP status code and a text also the following `JSON` format `{\"response\": \"failed\", \"reason\": \"<reason>\"}` explaining you about errors.\n\nError reasons returned are:\n - AppId already existed or scopeName doesn't exist\n - Google access token is invalid or expired\n - appId only contains characters in the following patterns ^[a-z_A-Z0-9:\\\\-]*\n - Cannot register App on GoFlow server\n - appId already existed or scopeName doesn't exist\n",
                 "produces": [
                     "application/json"
                 ],
@@ -2561,7 +2623,7 @@
                     {
                         "name": "scopeName",
                         "in": "query",
-                        "description": "List of 3cixty scopes requested by the App. not use currently.\n",
+                        "description": "List of 3cixty scopes requested by the App. if not specified all scopes are used.\n",
                         "default": "",
                         "type": "string"
                     },
@@ -2631,7 +2693,7 @@
                     "OAuth API - REST API"
                 ],
                 "summary": "Update 3cixty App key information",
-                "description": "This API is to update information on the `3cixty` Platform related to the App. \n\nLet us now describe the parameters required\n - `google_access_token`: Your `Google acces_token`. You might get a `Google access_token` by calling the `3cixty` Google token endpoint.\n - `appid`: Your application identity. This value must be unique within the `3cixty` Platform. Typically, an appid could be a name like `com.sample.foo` or just anything (without any fullstops).\n - `appname`: Your application name, for example `3cixty Test App`.\n - `category`: Your application category. You might use one of the following values: `Exploration`, `MobileGuide`, and `AppChallenge`. For App Challenge developers, you should use the AppChallenge category for yours.\n - `description`: Your application description to explain about what your application does. \n - `redirect_uri`: A redirect uri for web applications. \n - `thumbNailUrl`: A logo link for web applications. This logo is used to show permission question to your users when your web application asks your users to grant permission to access to his private data. This value is not required for Android applications, but mandatory for Web applications.\n\nThe return of your HTTP request is in `JSON` format. If you are successful to update an app key, the 3cixty Platform will respond a message with the content as `{\"response\": \"Successful\"}`; otherwise, you will receive 400 for HTTP status code and a text also the following `JSON` format `{\"response\": \"failed\", \"reason\": \"<reason>\"}` explaining you about errors.\n\nError reasons returned are:\n - Google access token is invalid or expired\n - appId only contains characters in the following patterns ^[a-z_A-Z0-9:\\\\-]*\n\nJava code to call the api\n<pre class=\"brush: java\">\n URL url = new URL(\"&lt;API&gt;?google_access_token=\" + \n googleAccessToken+ \"&amp;appid=\" + appid + \"&amp;appname=\" + \n URLEncoder.encode(appname, \"UTF-8\") + \"&amp;category=\" + \n URLEncoder.encode(cat, \"UTF-8\") + \"&amp;scopeName=\" + URLEncoder\n .encode(scope, \"UTF-8\") + \"&amp;description=\" + URLEncoder.encode\n (desc, \"UTF-8\") + \"&amp;redirect_uri=\" + URLEncoder.encode\n (redirect_uri, \"UTF-8\") + \"&amp;thumbNailUrl=\" + URLEncoder.encode\n (thumbNailUrl, \"UTF-8\"));\n InputStream input = url.openConnection().getInputStream();\n StringBuffer buffer = new StringBuffer();\n byte[] b = new byte[1024];\n int readBytes = 0;\n while (true) {\n \treadBytes = input.read(b);\n   if (readBytes &lt; 0) break;\n   buffer.append(new String(b, 0, readBytes));\n }\n input.close();\n       \n JSONObject json = new JSONObject(buffer.toString());\n if (json.has(\"response\")) {\n   if (json.getString(\"response\").equals(\"successful\")) {\n       System.out.println(\"Successful\");\n   } else {\n       System.out.println(\"Failed\");\n   }\n } else {\n \tSystem.out.println(\"Failed to update app key: \" + json);\n }\n </pre>\n",
+                "description": "This API is to update information on the `3cixty` Platform related to the App. \n\nLet us now describe the parameters required\n - `google_access_token`: Your `Google acces_token`. You might get a `Google access_token` by calling the `3cixty` Google token endpoint.\n - `appid`: Your application identity. This value must be unique within the `3cixty` Platform. Typically, an appid could be a name like `com.sample.foo` or just anything (without any fullstops).\n - `appname`: Your application name, for example `3cixty Test App`.\n - `category`: Your application category. You might use one of the following values: `Exploration`, `MobileGuide`, and `AppChallenge`. For App Challenge developers, you should use the AppChallenge category for yours.\n - `description`: Your application description to explain about what your application does. \n - `redirect_uri`: A redirect uri for web applications. \n - `thumbNailUrl`: A logo link for web applications. This logo is used to show permission question to your users when your web application asks your users to grant permission to access to his private data. This value is not required for Android applications, but mandatory for Web applications.\n\nThe return of your HTTP request is in `JSON` format. If you are successful to update an app key, the 3cixty Platform will respond a message with the content as `{\"response\": \"Successful\"}`; otherwise, you will receive 400 for HTTP status code and a text also the following `JSON` format `{\"response\": \"failed\", \"reason\": \"<reason>\"}` explaining you about errors.\n\nError reasons returned are:\n - Google access token is invalid or expired\n - appId only contains characters in the following patterns ^[a-z_A-Z0-9:\\\\-]*\n",
                 "produces": [
                     "application/json"
                 ],
@@ -2737,7 +2799,7 @@
                     "OAuth API - REST API"
                 ],
                 "summary": "Get 3cixty access_token from Google access_token",
-                "description": "This API is used to get `3cixty access_token` from `Google access_token`. **This API is only used by trusted `3cixty` apps**.\nLet us now describe the parameters required\n - `google_access_token`: Your `Google access_token`. You might get a `Google access_token` by calling the 3cixty Google token endpoint.\n\nThe return of your HTTP request is in `JSON` format. If the validation is successful, the 3cixty Platform will respond a message like `{\"response\": \"<ThreeCixtyAccessToken>\"}` to you; otherwise, you will get an error message like `{\"response\": \"failed\", \"reason\": \"<reason>\"}`.\n \n Error reasons returned are:\n  - App key is invalid\n  - App key is not allowed to get access token\n  - Google access token is invalid or expired\n  - scope is invalid\n  - Internal errors\n\nJava code to call the api\n<pre class=\"brush: java\">\n URL url = new URL(\"&lt;API&gt;\"));\n URLConnection urlConn = url.openConnection();\n urlConn.setRequestProperty(\"google_access_token\", &lt;googleAccessToken&gt;);\n urlConn.setRequestProperty(\"key\", &lt;ThreeCixtyAppKe&gt;);\n urlConn.setRequestProperty(\"scope\", &lt;scope&gt;);\n ((HttpURLConnection) urlConn).setRequestMethod(\"GET\");\n InputStream input = urlConn.getInputStream();\n StringBuffer buffer = new StringBuffer();\n byte[] b = new byte[1024];\n int readBytes = 0;\n while (true) {\n \treadBytes = input.read(b);\n \tif (readBytes &lt; 0) break;\n \tbuffer.append(new String(b, 0, readBytes));\n }\n input.close();\n JSONObject json = new JSONObject(buffer.toString());\n // Get information about 3cixty token in the following json properties: access_token\n System.out.println(json.getString(\"access_token\"));\n </pre>\n",
+                "description": "This API is used to get `3cixty access_token` from `Google access_token`. **This API is only used by trusted `3cixty` apps**.\nLet us now describe the parameters required\n - `google_access_token`: Your `Google access_token`. You might get a `Google access_token` by calling the 3cixty Google token endpoint.\n\nThe return of your HTTP request is in `JSON` format. If the validation is successful, the 3cixty Platform will respond a message like `{\"response\": \"<ThreeCixtyAccessToken>\"}` to you; otherwise, you will get an error message like `{\"response\": \"failed\", \"reason\": \"<reason>\"}`.\n \n Error reasons returned are:\n  - App key is invalid\n  - App key is not allowed to get access token\n  - Google access token is invalid or expired\n  - scope is invalid\n  - Internal errors\n",
                 "produces": [
                     "application/json"
                 ],
@@ -2808,7 +2870,7 @@
                     "OAuth API - REST API"
                 ],
                 "summary": "Get 3cixty access_token from Facebook Access token",
-                "description": "This API is used to get `3cixty access_token` from `Facebook access_token`. **This API is only used by trusted `3cixty` apps**.\nLet us now describe some of the parameters:\n - `fb_access_token`: your `Facebook access_token`. This is a required Parameter\n - `width` of profile Image requested from Facebook. This is a optional parameter\n - `height` of profile Image requested from Facebook. This is a optional parameter\n\nThe return of your HTTP request is in `JSON` format. If the validation is successful, the 3cixty Platform will respond a message like `{\"response\": \"<ThreeCixtyAccessToken>\"}` to you; otherwise, you will get an error message like `{\"response\": \"failed\", \"reason\": \"<reason>\"}`.\n \n Error reasons returned are:\n \n   - App key is invalid\n   - App key is not allowed to get access token\n   - Facebook access token is invalid or expired\n   - scope is invalid\n   - Internal errors\n\nJava code to call the api\n<pre class=\"brush: java\">\n URL url = new URL(\"&lt;API&gt;\"));\n URLConnection urlConn = url.openConnection();\n urlConn.setRequestProperty(\"fb_access_token\", &lt;facebookAccessToken&gt;);\n urlConn.setRequestProperty(\"key\", &lt;ThreeCixtyAppKey&gt;);\n urlConn.setRequestProperty(\"scope\", &lt;scope&gt;);\n ((HttpURLConnection) urlConn).setRequestMethod(\"GET\");\n InputStream input = urlConn.getInputStream();\n StringBuffer buffer = new StringBuffer();\n byte[] b = new byte[1024];\n int readBytes = 0;\n while (true) {\n \treadBytes = input.read(b);\n \tif (readBytes &lt; 0) break;\n \tbuffer.append(new String(b, 0, readBytes));\n }\n input.close();\n JSONObject json = new JSONObject(buffer.toString());\n // Get information about 3cixty token in the following json properties: access_token\n System.out.println(json.getString(\"access_token\"));\n </pre>\n",
+                "description": "This API is used to get `3cixty access_token` from `Facebook access_token`. **This API is only used by trusted `3cixty` apps**.\nLet us now describe some of the parameters:\n - `fb_access_token`: your `Facebook access_token`. This is a required Parameter\n - `width` of profile Image requested from Facebook. This is a optional parameter\n - `height` of profile Image requested from Facebook. This is a optional parameter\n\nThe return of your HTTP request is in `JSON` format. If the validation is successful, the 3cixty Platform will respond a message like `{\"response\": \"<ThreeCixtyAccessToken>\"}` to you; otherwise, you will get an error message like `{\"response\": \"failed\", \"reason\": \"<reason>\"}`.\n \n Error reasons returned are:\n \n   - App key is invalid\n   - App key is not allowed to get access token\n   - Facebook access token is invalid or expired\n   - scope is invalid\n   - Internal errors\n",
                 "produces": [
                     "application/json"
                 ],
@@ -2893,7 +2955,7 @@
                     "OAuth API - REST API"
                 ],
                 "summary": "Validate 3cixty access_token",
-                "description": "Verify a `3cixty access_token`. This can be used to know if a developer needs to refresh the `3cixty access_token`.\n\nThe return of your HTTP request is in `JSON` format. If the validation is successful, the `3cixty` Platform will respond a message like `{\"response\": \"ok\"}` to you ; otherwise, you will get an error message like `{\"response\": \"failed\", \"reason\": \"<reason>\"}`.\n\nError reasons returned are:\n - Access Token is invalid\n - App key is invalid\n\nJava code to call the api\n<pre class=\"brush: java\">\n URL url = new URL(\"&lt;API&gt;\"));\n URLConnection urlConn = url.openConnection();\n urlConn.setRequestProperty(\"access_token\", &lt;ThreeCixtyAccessToken&gt;);\n urlConn.setRequestProperty(\"key\", &lt;ThreeCixtyAppKey&gt;);\n InputStream input = urlConn.getInputStream();\n StringBuffer buffer = new StringBuffer();\n byte[] b = new byte[1024];\n int readBytes = 0;\n while (true) {\n \treadBytes = input.read(b);\n \tif (readBytes &lt; 0) break;\n \tbuffer.append(new String(b, 0, readBytes));\n }\n input.close();\n JSONObject json = new JSONObject(buffer.toString());\n if (json.has(\"response\")) {\n if (json.getString(\"response\").equals(\"ok\")) {\n     System.out.println(\"the given access token is valid\");\n } else {\n     System.out.println(\"the given access token is invalid\");\n }\n } else {\n \tSystem.out.println(\"Error\");\n }\n</pre>\n",
+                "description": "Verify a `3cixty access_token`. This can be used to know if a developer needs to refresh the `3cixty access_token`.\n\nThe return of your HTTP request is in `JSON` format. If the validation is successful, the `3cixty` Platform will respond a message like `{\"response\": \"ok\"}` to you ; otherwise, you will get an error message like `{\"response\": \"failed\", \"reason\": \"<reason>\"}`.\n\nError reasons returned are:\n - Access Token is invalid\n - App key is invalid\n",
                 "produces": [
                     "application/json"
                 ],
@@ -2947,7 +3009,7 @@
                     "OAuth API - REST API"
                 ],
                 "summary": "Get all 3cixty apps associated to Google Access token",
-                "description": "This API is used to get apps attached to a given `Google access_token` in the `3cixty` Platform.\n\nThe return of your HTTP request is in `JSON` format. If the validation is successful, the `3cixty` Platform will respond a message as shown below to you; otherwise, you will get an error message, for example `{\"response\": \"failed\", \"reason\": \"<reson>\"}`.\n\nError reasons returned are:\n- Google access token is invalid or expired\n\nReturns for `format=json`:\n```json\n [{\"key\": \"<Appkey>\", \"id\": \"<Appid>\", \"name\": \"<nameoftheapp>\", \"description\": \"<description>\", \"scopes\": \"<scopes>\", \"redirect_uri\": \"<redirect-url>\", \"logo\": \"<applogo>\"}]\n```\nJava code to call the api\n<pre class=\"brush: java\">\n URL url = new URL(\"&lt;API&gt;\" + \"google_access_token=\" + \n URLEncoder.encode(googleAccessToken, \"UTF-8\") + \"&amp;format=\" + \n URLEncoder.encode(format, \"UTF-8\")\n );\n URLConnection urlConn = url.openConnection();\n \n ((HttpURLConnection) urlConn).setRequestMethod(\"GET\");\n InputStream input = urlConn.getInputStream();\n \n StringBuffer buffer = new StringBuffer();\n byte[] b = new byte[1024];\n int readBytes = 0;\n while (true) {\n \treadBytes = input.read(b);\n \tif (readBytes &lt; 0) break;\n \tbuffer.append(new String(b, 0, readBytes));\n }\n input.close();\n \n JSONObject json = new JSONObject(buffer.toString());\n // Get information about Apps:\n ...\n</pre>\n",
+                "description": "This API is used to get apps attached to a given `Google access_token` in the `3cixty` Platform.\n\nThe return of your HTTP request is in `JSON` format. If the validation is successful, the `3cixty` Platform will respond a message as shown below to you; otherwise, you will get an error message, for example `{\"response\": \"failed\", \"reason\": \"<reson>\"}`.\n\nError reasons returned are:\n- Google access token is invalid or expired\n\nReturns for `format=json`:\n```json\n [{\"key\": \"<Appkey>\", \"id\": \"<Appid>\", \"name\": \"<nameoftheapp>\", \"description\": \"<description>\", \"scopes\": \"<scopes>\", \"redirect_uri\": \"<redirect-url>\", \"logo\": \"<applogo>\"}]\n```\n",
                 "produces": [
                     "application/json",
                     "text/html"
@@ -3000,7 +3062,7 @@
                     "OAuth API - REST API"
                 ],
                 "summary": "Get 3cixty App Key from Google Access token",
-                "description": "This API is used to retrieve `3cixty App Key` from `Google access_token` in the `3cixty` Platform.\n\nThe return of your HTTP request is in `JSON` format. If the validation is successful, the `3cixty` Platform will respond a message as `{\"key\": \"<ThreeCixtyAppkey>\"}` to you; otherwise, you will get an error message of the format: `{\"response\": \"failed\", \"reason\": \"<reson>\"}`.\n\nError reasons returned are:\n - Google access token is invalid or expired\n - appid doesn't exit\n\nJava code to call the api\n<pre class=\"brush: java\">\n URL url = new URL(\"&lt;API&gt;\" + \"google_access_token=\" + \n URLEncoder.encode(googleAccessToken, \"UTF-8\")+ \"&amp;appid=\" + \n URLEncoder.encode(appid, \"UTF-8\") );\n URLConnection urlConn = url.openConnection();\n ((HttpURLConnection) urlConn).setRequestMethod(\"GET\");\n InputStream input = urlConn.getInputStream();\n StringBuffer buffer = new StringBuffer();\n byte[] b = new byte[1024];\n int readBytes = 0;\n while (true) {\n \treadBytes = input.read(b);\n \tif (readBytes &lt; 0) break;\n \tbuffer.append(new String(b, 0, readBytes));\n }\n input.close();\n JSONObject json = new JSONObject(buffer.toString());\n // Get key in the following json properties:    \n System.out.println(json.getString(\"key\"));\n</pre>\n",
+                "description": "This API is used to retrieve `3cixty App Key` from `Google access_token` in the `3cixty` Platform.\n\nThe return of your HTTP request is in `JSON` format. If the validation is successful, the `3cixty` Platform will respond a message as `{\"key\": \"<ThreeCixtyAppkey>\"}` to you; otherwise, you will get an error message of the format: `{\"response\": \"failed\", \"reason\": \"<reson>\"}`.\n\nError reasons returned are:\n - Google access token is invalid or expired\n - appid doesn't exit\n",
                 "produces": [
                     "application/json"
                 ],
@@ -3054,7 +3116,7 @@
                     "OAuth API - REST API"
                 ],
                 "summary": "Get 3cixty App key info",
-                "description": "This API is used to retrieve `3cixty App Key` information from a `3cixty App key`.\n\nThe return of your HTTP request is in `JSON` format. If the validation is successful, the `3cixty` Platform will respond a message as `{\"response\": \"found\", \"appid\":\"<appID>\", \"appname\": \"<AppName>\"}` to you; otherwise, you will get an error message of the format `{\"response\": \"<reason>\"}`.\n\nError reasons returned are:\n - not found\n\nJava code to call the api\n<pre class=\"brush: java\">\n URL url = new URL(\"&lt;AP&gt;\");\n URLConnection urlConn = url.openConnection();\n urlConn.setRequestProperty(\"key\",&lt;ThreeCixtyAppke&gt;);\n ((HttpURLConnection) urlConn).setRequestMethod(\"GET\");\n InputStream input = urlConn.getInputStream();\n StringBuffer buffer = new StringBuffer();\n byte[] b = new byte[1024];\n int readBytes = 0;\n while (true) {\n \treadBytes = input.read(b);\n \tif (readBytes &lt; 0) break;\n \tbuffer.append(new String(b, 0, readBytes));\n }\n input.close();\n JSONObject json = new JSONObject(buffer.toString());\n // Get key in the following json properties:    \n System.out.println(json.getString(\"key\"));\n</pre>\n",
+                "description": "This API is used to retrieve `3cixty App Key` information from a `3cixty App key`.\n\nThe return of your HTTP request is in `JSON` format. If the validation is successful, the `3cixty` Platform will respond a message as `{\"response\": \"found\", \"appid\":\"<appID>\", \"appname\": \"<AppName>\"}` to you; otherwise, you will get an error message of the format `{\"response\": \"<reason>\"}`.\n\nError reasons returned are:\n - not found\n",
                 "produces": [
                     "application/json"
                 ],
@@ -3109,7 +3171,7 @@
                     "OAuth API - REST API"
                 ],
                 "summary": "Get 3cixty App key info from 3cixty access_token",
-                "description": "This API is used to retrieve `3cixty App Key` information from a `3cixty access_token`.\n\nThe return of your HTTP request is in `JSON` format. If the validation is successful, the `3cixty` Platform will respond a message as `{\"response\": \"found\", \"appid\":\"<appID>\", \"appname\": \"<AppName>\"}` to you; otherwise, you will get an error message of the format `{\"response\": \"<reason>\"}`.\n\nError reasons returned are:\n - not found\n\nJava code to call the api\n<pre class=\"brush: java\">\n URL url = new URL(\"&lt;API&gt;\");\n URLConnection urlConn = url.openConnection();\n urlConn.setRequestProperty(\"access_token\", &lt;ThreeCixtyAccessToken&gt;);\n ((HttpURLConnection) urlConn).setRequestMethod(\"GET\");\n InputStream input = urlConn.getInputStream();\n StringBuffer buffer = new StringBuffer();\n byte[] b = new byte[1024];\n int readBytes = 0;\n while (true) {\n \treadBytes = input.read(b);\n \tif (readBytes &lt; 0) break;\n \tbuffer.append(new String(b, 0, readBytes));\n }\n input.close();\n JSONObject json = new JSONObject(buffer.toString());\n ...\n</pre>\n",
+                "description": "This API is used to retrieve `3cixty App Key` information from a `3cixty access_token`.\n\nThe return of your HTTP request is in `JSON` format. If the validation is successful, the `3cixty` Platform will respond a message as `{\"response\": \"found\", \"appid\":\"<appID>\", \"appname\": \"<AppName>\"}` to you; otherwise, you will get an error message of the format `{\"response\": \"<reason>\"}`.\n\nError reasons returned are:\n - not found\n",
                 "produces": [
                     "application/json"
                 ],
@@ -3164,7 +3226,7 @@
                     "OAuth API - REST API"
                 ],
                 "summary": "Get scopes defined in 3cixty Platform",
-                "description": "This API is used to retrieve scopes available in the `3cixty`.\nThe return of your HTTP request is in `JSON` format as `[{\"scopeName\":\"<scope1>\",\"description\":\"Description for the scope\"},{\"scopeName\":\"<scope2>\",\"description\":\"Description for the scope\"}]` to you.\nJava code to call the api\n<pre class=\"brush: java\">\n URL url = new URL(\"&lt;API&gt;\");\n URLConnection urlConn = url.openConnection();\n ((HttpURLConnection) urlConn).setRequestMethod(\"GET\");\n InputStream input = urlConn.getInputStream();\n StringBuffer buffer = new StringBuffer();\n byte[] b = new byte[1024];\n int readBytes = 0;\n while (true) {\n \treadBytes = input.read(b);\n \tif (readBytes &lt; 0) break;\n \tbuffer.append(new String(b, 0, readBytes));\n }\n input.close();\n JSONObject json = new JSONObject(buffer.toString());\n ...\n</pre>\n",
+                "description": "This API is used to retrieve scopes available in the `3cixty`.\nThe return of your HTTP request is in `JSON` format as `[{\"scopeName\":\"<scope1>\",\"description\":\"Description for the scope\"},{\"scopeName\":\"<scope2>\",\"description\":\"Description for the scope\"}]` to you.\n",
                 "produces": [
                     "application/json"
                 ],
@@ -3203,7 +3265,7 @@
                     "OAuth API - REST API"
                 ],
                 "summary": "Refresh a 3cixty access_token",
-                "description": "This API is to refresh a `3cixty access_token` in the case where the current `3cixty access_token` is no longer valid because each `3cixty access_token` only lasts for a day. When you refresh a `3cixty access_token`, the `3cixty` Platform doesn't need to have interaction with users, so you can call this API through your code in Java or any other languages.\n\nThe return of your HTTP request is in `JSON` format. If the validation is successful, the `3cixty` Platform will respond a message like `{\"access_token\": \"<ThreeCixtyAccessToken>\", \"refresh_token\": \"<ThreeCixtyRefreshToken>\", \"expires_in\": <number>, \"scope\": \"<Scopes>\"}` to you; otherwise, you will get an error message of the format `{\"response\": \"failed\", \"reason\": \"<reason>\"}`.\n \n Error reasons returned are:\n  - refresh token is invalid\n\nJava code to call the api\n<pre class=\"brush: java\">\n URL url = new URL(\"&lt;API&gt;\"));\n URLConnection urlConn = url.openConnection();\n urlConn.setRequestProperty(\"refresh_token\", &lt;ThreeCixtyRefreshToken&gt;);\n ((HttpURLConnection) urlConn).setRequestMethod(\"GET\");\n InputStream input = urlConn.getInputStream();\n StringBuffer buffer = new StringBuffer();\n byte[] b = new byte[1024];\n int readBytes = 0;\n while (true) {\n \treadBytes = input.read(b);\n \tif (readBytes &lt; 0) break;\n \tbuffer.append(new String(b, 0, readBytes));\n }\n input.close();\n // Get information about 3cixty token in the following json properties: access_token, refresh_token, expires_in and scope\n System.out.println(json.getString(\"access_token\"));\n ...\n\n</pre>\n",
+                "description": "This API is to refresh a `3cixty access_token` in the case where the current `3cixty access_token` is no longer valid because each `3cixty access_token` only lasts for a day. When you refresh a `3cixty access_token`, the `3cixty` Platform doesn't need to have interaction with users, so you can call this API through your code in Java or any other languages.\n\nThe return of your HTTP request is in `JSON` format. If the validation is successful, the `3cixty` Platform will respond a message like `{\"access_token\": \"<ThreeCixtyAccessToken>\", \"refresh_token\": \"<ThreeCixtyRefreshToken>\", \"expires_in\": <number>, \"scope\": \"<Scopes>\"}` to you; otherwise, you will get an error message of the format `{\"response\": \"failed\", \"reason\": \"<reason>\"}`.\n \n Error reasons returned are:\n  - refresh token is invalid\n",
                 "produces": [
                     "application/json"
                 ],
@@ -3272,7 +3334,64 @@
                     "OAuth API - REST API"
                 ],
                 "summary": "Revoke a 3cixty access_token",
-                "description": "This API is used to revoke a `3cixty access_token`.\n\nThe return of your HTTP request is in `JSON` format. If the validation is successful, the `3cixty` Platform will respond a message like `{\"response\": \"Successful\"}` to you; otherwise, you will get an error message like `{\"response\": \"failed\", \"reason\": \"<reason>\"}`.\n \n Error reasons returned are:\n  - an invalid access token or internal error\n\nJava code to call the api\n<pre class=\"brush: java\">\n URL url = new URL(\"&lt;API&gt;\"));\n URLConnection urlConn = url.openConnection();\n urlConn.setRequestProperty(\"access_token\", &lt;ThreeCixtyAccessToken&gt;);\n ((HttpURLConnection) urlConn).setRequestMethod(\"GET\");\n InputStream input = urlConn.getInputStream();\n StringBuffer buffer = new StringBuffer();\n byte[] b = new byte[1024];\n int readBytes = 0;\n while (true) {\n \treadBytes = input.read(b);\n \tif (readBytes &lt; 0) break;\n \tbuffer.append(new String(b, 0, readBytes));\n }\n input.close();\n // Get information about 3cixty token in the following json properties: access_token, refresh_token, expires_in and scope\n System.out.println(json.getString(\"access_token\"));\n ...\n\n</pre>\n",
+                "description": "This API is used to revoke a `3cixty access_token`.\n\nThe return of your HTTP request is in `JSON` format. If the validation is successful, the `3cixty` Platform will respond a message like `{\"response\": \"Successful\"}` to you; otherwise, you will get an error message like `{\"response\": \"failed\", \"reason\": \"<reason>\"}`.\n \n Error reasons returned are:\n  - an invalid access token or internal error\n",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "access_token",
+                        "in": "header",
+                        "description": "A 3cixty access_token.\n",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "returns HTTP response in a JSON of the format `{\"response\": \"Successful\"}`\n",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "response": {
+                                    "type": "string",
+                                    "description": "alwasys \"Suceessful\"\n"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "On the failure an appropriate message is returned. You will get an error message like `{\"response\": \"failed\", \"reason\": \"<reason>\"}`.\nError reasons returned are:\n - an invalid access token or internal error\n",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "response": {
+                                    "type": "string",
+                                    "description": "always \"failed\"\n"
+                                },
+                                "reason": {
+                                    "type": "string",
+                                    "description": "message"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "internal error\n",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/singUp": {
+            "get": {
+                "tags": [
+                    "OAuth API - REST API"
+                ],
+                "summary": "This API allows to a 3cixty access_token",
+                "description": "This API is used to revoke a `3cixty access_token`.\n\nThe return of your HTTP request is in `JSON` format. If the validation is successful, the `3cixty` Platform will respond a message like `{\"response\": \"Successful\"}` to you; otherwise, you will get an error message like `{\"response\": \"failed\", \"reason\": \"<reason>\"}`.\n \n Error reasons returned are:\n  - an invalid access token or internal error\n",
                 "produces": [
                     "application/json"
                 ],
@@ -3342,576 +3461,6 @@
                     "items": {
                         "type": "object"
                     }
-                }
-            }
-        },
-        "result2": {
-            "type": "object",
-            "properties": {
-                "distinct": {
-                    "type": "boolean",
-                    "description": "either \"true\" or \"false\""
-                },
-                "ordered": {
-                    "type": "boolean",
-                    "description": "either \"true\" or \"false\""
-                },
-                "bindings": {
-                    "type": "array",
-                    "description": "array of properties in the the object depending on the query and the API. Place queries will have {\"editorial_score\", \"score\", \"venue\", \"title\", \"cell\", \"cellGeo\", \"editorial\", \"description\", \"img\", \"long\", \"lat\"} fields, event queries will have {\"url\", \"event\", \"datetimeBegin\", \"datetimeEnd\", \"title\", \"cell\", \"cellGeo\", \"description\", \"img\", \"long\", \"lat\", \"placeName\"} fields,  count apis will return {\"count\"} field",
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "editorial_score": {
-                                "type": "object",
-                                "description": "editorial_score",
-                                "properties": {
-                                    "type": {
-                                        "type": "string",
-                                        "description": "type"
-                                    },
-                                    "datatype": {
-                                        "type": "string",
-                                        "description": "uri"
-                                    },
-                                    "value": {
-                                        "type": "string",
-                                        "description": "integer"
-                                    }
-                                }
-                            },
-                            "score": {
-                                "type": "object",
-                                "description": "social score",
-                                "properties": {
-                                    "type": {
-                                        "type": "string",
-                                        "description": "type"
-                                    },
-                                    "datatype": {
-                                        "type": "string",
-                                        "description": "uri"
-                                    },
-                                    "value": {
-                                        "type": "string",
-                                        "description": "integer"
-                                    }
-                                }
-                            },
-                            "venue": {
-                                "type": "object",
-                                "description": "venue id",
-                                "properties": {
-                                    "type": {
-                                        "type": "string",
-                                        "description": "type"
-                                    },
-                                    "datatype": {
-                                        "type": "string",
-                                        "description": "uri"
-                                    },
-                                    "value": {
-                                        "type": "string",
-                                        "description": "string"
-                                    }
-                                }
-                            },
-                            "title": {
-                                "type": "object",
-                                "description": "title",
-                                "properties": {
-                                    "type": {
-                                        "type": "string",
-                                        "description": "type"
-                                    },
-                                    "datatype": {
-                                        "type": "string",
-                                        "description": "uri"
-                                    },
-                                    "value": {
-                                        "type": "string",
-                                        "description": "integer"
-                                    }
-                                }
-                            },
-                            "cell": {
-                                "type": "object",
-                                "description": "cell",
-                                "properties": {
-                                    "type": {
-                                        "type": "string",
-                                        "description": "type"
-                                    },
-                                    "datatype": {
-                                        "type": "string",
-                                        "description": "uri"
-                                    },
-                                    "value": {
-                                        "type": "string",
-                                        "description": "integer"
-                                    }
-                                }
-                            },
-                            "cellGeo": {
-                                "type": "object",
-                                "description": "cell Geo",
-                                "properties": {
-                                    "type": {
-                                        "type": "string",
-                                        "description": "type"
-                                    },
-                                    "datatype": {
-                                        "type": "string",
-                                        "description": "uri"
-                                    },
-                                    "value": {
-                                        "type": "string",
-                                        "description": "integer"
-                                    }
-                                }
-                            },
-                            "editorial": {
-                                "type": "object",
-                                "description": "editorial value",
-                                "properties": {
-                                    "type": {
-                                        "type": "string",
-                                        "description": "type"
-                                    },
-                                    "datatype": {
-                                        "type": "string",
-                                        "description": "uri"
-                                    },
-                                    "value": {
-                                        "type": "string",
-                                        "description": "integer"
-                                    }
-                                }
-                            },
-                            "description": {
-                                "type": "object",
-                                "description": "description",
-                                "properties": {
-                                    "type": {
-                                        "type": "string",
-                                        "description": "type"
-                                    },
-                                    "datatype": {
-                                        "type": "string",
-                                        "description": "uri"
-                                    },
-                                    "value": {
-                                        "type": "string",
-                                        "description": "integer"
-                                    }
-                                }
-                            },
-                            "img": {
-                                "type": "object",
-                                "description": "image",
-                                "properties": {
-                                    "type": {
-                                        "type": "string",
-                                        "description": "type"
-                                    },
-                                    "datatype": {
-                                        "type": "string",
-                                        "description": "uri"
-                                    },
-                                    "value": {
-                                        "type": "string",
-                                        "description": "integer"
-                                    }
-                                }
-                            },
-                            "long": {
-                                "type": "object",
-                                "description": "longitude",
-                                "properties": {
-                                    "type": {
-                                        "type": "string",
-                                        "description": "type"
-                                    },
-                                    "datatype": {
-                                        "type": "string",
-                                        "description": "uri"
-                                    },
-                                    "value": {
-                                        "type": "string",
-                                        "description": "integer"
-                                    }
-                                }
-                            },
-                            "lat": {
-                                "type": "object",
-                                "description": "latitude",
-                                "properties": {
-                                    "type": {
-                                        "type": "string",
-                                        "description": "type"
-                                    },
-                                    "datatype": {
-                                        "type": "string",
-                                        "description": "uri"
-                                    },
-                                    "value": {
-                                        "type": "string",
-                                        "description": "integer"
-                                    }
-                                }
-                            },
-                            "url": {
-                                "type": "object",
-                                "description": "event url",
-                                "properties": {
-                                    "type": {
-                                        "type": "string",
-                                        "description": "type"
-                                    },
-                                    "datatype": {
-                                        "type": "string",
-                                        "description": "uri"
-                                    },
-                                    "value": {
-                                        "type": "string",
-                                        "description": "integer"
-                                    }
-                                }
-                            },
-                            "event": {
-                                "type": "object",
-                                "description": "event id",
-                                "properties": {
-                                    "type": {
-                                        "type": "string",
-                                        "description": "type"
-                                    },
-                                    "datatype": {
-                                        "type": "string",
-                                        "description": "uri"
-                                    },
-                                    "value": {
-                                        "type": "string",
-                                        "description": "integer"
-                                    }
-                                }
-                            },
-                            "datetimeBegin": {
-                                "type": "object",
-                                "description": "datetime Begin",
-                                "properties": {
-                                    "type": {
-                                        "type": "string",
-                                        "description": "type"
-                                    },
-                                    "datatype": {
-                                        "type": "string",
-                                        "description": "uri"
-                                    },
-                                    "value": {
-                                        "type": "string",
-                                        "description": "integer"
-                                    }
-                                }
-                            },
-                            "datetimeEnd": {
-                                "type": "object",
-                                "description": "datetime end",
-                                "properties": {
-                                    "type": {
-                                        "type": "string",
-                                        "description": "type"
-                                    },
-                                    "datatype": {
-                                        "type": "string",
-                                        "description": "uri"
-                                    },
-                                    "value": {
-                                        "type": "string",
-                                        "description": "integer"
-                                    }
-                                }
-                            },
-                            "placeName": {
-                                "type": "object",
-                                "description": "latitude",
-                                "properties": {
-                                    "type": {
-                                        "type": "string",
-                                        "description": "type"
-                                    },
-                                    "datatype": {
-                                        "type": "string",
-                                        "description": "uri"
-                                    },
-                                    "value": {
-                                        "type": "string",
-                                        "description": "integer"
-                                    }
-                                }
-                            },
-                            "count": {
-                                "type": "object",
-                                "properties": {
-                                    "type": {
-                                        "type": "string",
-                                        "description": "type"
-                                    },
-                                    "datatype": {
-                                        "type": "string",
-                                        "description": "uri"
-                                    },
-                                    "value": {
-                                        "type": "string",
-                                        "description": "integer"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "fullInfo": {
-            "type": "object",
-            "properties": {
-                "Events": {
-                    "type": "array",
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "address": {
-                                "type": "string",
-                                "description": "address"
-                            },
-                            "image_url": {
-                                "type": "string",
-                                "description": "image url"
-                            },
-                            "locality": {
-                                "type": "string",
-                                "description": "locality"
-                            },
-                            "name": {
-                                "type": "string",
-                                "description": "name"
-                            },
-                            "description": {
-                                "type": "string",
-                                "description": "description"
-                            },
-                            "lon": {
-                                "type": "string",
-                                "description": "longitude"
-                            },
-                            "time_end": {
-                                "type": "string",
-                                "description": "time event ends"
-                            },
-                            "source": {
-                                "type": "string",
-                                "description": "source of event"
-                            },
-                            "id": {
-                                "type": "string",
-                                "description": "id of event"
-                            },
-                            "category": {
-                                "type": "string",
-                                "description": "category of event"
-                            },
-                            "time_beginning": {
-                                "type": "string",
-                                "description": "time begining"
-                            },
-                            "lat": {
-                                "type": "string",
-                                "description": "latitude"
-                            },
-                            "translation": {
-                                "type": "string",
-                                "description": "translation true or false"
-                            }
-                        }
-                    }
-                },
-                "POIs": {
-                    "type": "array",
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "aggregate_rating": {
-                                "type": "string",
-                                "description": "aggregate_rating"
-                            },
-                            "address": {
-                                "type": "string",
-                                "description": "address"
-                            },
-                            "reviews": {
-                                "type": "array",
-                                "description": "reviews",
-                                "items": {
-                                    "type": "string"
-                                }
-                            },
-                            "reviewTranslations": {
-                                "type": "array",
-                                "description": "review translations",
-                                "items": {
-                                    "type": "string"
-                                }
-                            },
-                            "image_url": {
-                                "type": "string",
-                                "description": "image url"
-                            },
-                            "name": {
-                                "type": "string",
-                                "description": "name"
-                            },
-                            "telephone": {
-                                "type": "string",
-                                "description": "telephone"
-                            },
-                            "source": {
-                                "type": "string",
-                                "description": "source"
-                            },
-                            "id": {
-                                "type": "string",
-                                "description": "id of place"
-                            },
-                            "review_counts": {
-                                "type": "string",
-                                "description": "review counts"
-                            },
-                            "category": {
-                                "type": "string",
-                                "description": "category"
-                            },
-                            "translation": {
-                                "type": "string",
-                                "description": "translation true or false"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "Events": {
-            "type": "object",
-            "properties": {
-                "address": {
-                    "type": "string",
-                    "description": "address"
-                },
-                "image_url": {
-                    "type": "string",
-                    "description": "image url"
-                },
-                "locality": {
-                    "type": "string",
-                    "description": "locality"
-                },
-                "name": {
-                    "type": "string",
-                    "description": "name"
-                },
-                "description": {
-                    "type": "string",
-                    "description": "description"
-                },
-                "lon": {
-                    "type": "string",
-                    "description": "longitude"
-                },
-                "time_end": {
-                    "type": "string",
-                    "description": "time event ends"
-                },
-                "source": {
-                    "type": "string",
-                    "description": "source of event"
-                },
-                "id": {
-                    "type": "string",
-                    "description": "id of event"
-                },
-                "category": {
-                    "type": "string",
-                    "description": "category of event"
-                },
-                "time_beginning": {
-                    "type": "string",
-                    "description": "time begining"
-                },
-                "lat": {
-                    "type": "string",
-                    "description": "latitude"
-                },
-                "translation": {
-                    "type": "string",
-                    "description": "translation true or false"
-                }
-            }
-        },
-        "POIs": {
-            "type": "object",
-            "properties": {
-                "aggregate_rating": {
-                    "type": "string",
-                    "description": "aggregate_rating"
-                },
-                "address": {
-                    "type": "string",
-                    "description": "address"
-                },
-                "reviews": {
-                    "type": "array",
-                    "description": "reviews",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "reviewTranslations": {
-                    "type": "array",
-                    "description": "review translations",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "image_url": {
-                    "type": "string",
-                    "description": "image url"
-                },
-                "name": {
-                    "type": "string",
-                    "description": "name"
-                },
-                "telephone": {
-                    "type": "string",
-                    "description": "telephone"
-                },
-                "source": {
-                    "type": "string",
-                    "description": "source"
-                },
-                "id": {
-                    "type": "string",
-                    "description": "id of place"
-                },
-                "review_counts": {
-                    "type": "string",
-                    "description": "review counts"
-                },
-                "category": {
-                    "type": "string",
-                    "description": "category"
-                },
-                "translation": {
-                    "type": "string",
-                    "description": "translation true or false"
                 }
             }
         }
