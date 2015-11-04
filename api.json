@@ -1,7 +1,6 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "An overview of 3cixty APIs is provided here.\n\n**Getting Started:**\n\n - To get started depending on your needs you either need `3cixty App Key` or `3cixty access_token` or `Google access_token` or `Facebook access_token`. The only APIs where above mentioned parameters are not required are `/validate` (validate sparql query conformity with sparql 1.1) and `/getScope` (know scopes in 3cixty API).\n - To get the `3cixty App Key` please use the [link](appchallenge) alternatviely you can also use the `/getAppKey` API below. In such a case you will need your google access token please open [https://api.3cixty.com/v2/googleToken.jsp](https://api.3cixty.com/v2/googleToken.jsp) on your web browser to get your `Google access_token`.\n - Once you have the `3cixty App key` please use the API as need. Note that some APIs use `3cixty access_token` while some need `Google access_token`. To get your `3cixty access_token` from `Google access_token` use the `/getAccessToken` API.\n   \n   \n Below are the Java code steps to be performed to successfully call the API you need\n \n - **Step 1**: use following code and specify the `<API>` parameter.\n \n   <pre class=\"brush: java\">\n   URL url = new URL(\"https:\\\\api.3cixty.com\\v2\\&lt;API&gt;\"));\n   </pre>\n \n - **Step 2**: create the url connection as below. Here `<TYPE>` is either `GET` or `POST`\n \n   <pre class=\"brush: java\">\n   URLConnection urlConn = url.openConnection();\n   ((HttpURLConnection) urlConn).setRequestMethod(\"&ltTYPE&gt\");\n   </pre>\n \n - **Step 3**: Based on what parameters are required by the `<API>`, you need to either set the following:\n \n   - for header paramaters\n     <pre class=\"brush: java\">\n     con.setRequestProperty(\"access_token\", &lt;ThreeCixtyAccessToken&gt;);\n     //similary set other header parameters\n     ...\n     </pre>\n   \n   - for query parameters in the **Step 1**  provide the paramters in the `URL` itself. For example:\n     <pre class=\"brush: java\">\n     URL url = new URL(\"https:\\\\api.3cixty.com\\v2\\&lt;API&gt;?\n       google_access_token=\"&lt;googleAccessToken&gt;\" + \n       \"&amp;appid=\" + &lt;appid&gt; +\n       \"&amp;appname=\" + URLEncoder.encode(&lt;appname&gt;, \"UTF-8\") +\n       \"&amp;category=\" + URLEncoder.encode(&lt;cat&gt;, \"UTF-8\")+\n       \"&amp;scopeName=\" + URLEncoder.encode(&lt;scope&gt;, \"UTF-8\") + \n       \"&amp;description=\" + URLEncoder.encode(&lt;desc&gt;, \"UTF-8\") +\n       \"&amp;redirect_uri=\" + URLEncoder.encode(&lt;redirect_uri&gt;, \"UTF-8\") + \n       \"&amp;thumbNailUrl=\" + URLEncoder.encode(&lt;thumbNailUrl&gt;, \"UTF-8\"))\"));\n     </pre>\n   \n   - for `JSON` input in the body use:\n   \n     <pre class=\"brush: java\">\n     String jsonString=\"&lt;json&gt;\";\n     </pre>\n \n - **Step 4**: Depending on the above step, \n   \n   - for `JSON` as the input, use: \n     <pre class=\"brush: java\">\n     OutputStreamWriter writer = new OutputStreamWriter(urlConn.getOutputStream());\n     writer.write(jsonString.getBytes(UTF8));\n     </pre>\n   \n   - for other case, use:\n     <pre class=\"brush: java\">\n     InputStream input = urlConn.getInputStream();\n     StringBuffer buffer = new StringBuffer();\n     byte[] b = new byte[1024];\n     int readBytes = 0;\n     while (true) { \n       readBytes = input.read(b);\n       if (readBytes &lt; 0) break;\n       buffer.append(new String(b, 0, readBytes));\n     }\n     input.close();\n     JSONObject json = new JSONObject(buffer.toString());\n     ...\n   </pre>\n",
         "description": "An overview of 3cixty APIs is provided here.\n\n**Getting Started:**\n\n - To get started depending on your needs you either need `3cixty App Key` or `3cixty access_token` or `Google access_token` or `Facebook access_token`. The only APIs where above mentioned parameters are not required are `/validate` (validate sparql query conformity with sparql 1.1) and `/getScope` (know scopes in 3cixty API).\n - To get the `3cixty App Key` please use the [link](appchallenge) alternatviely you can also use the `/getAppKey` API below. In such a case you will need your google access token please open [https://api.3cixty.com/v2/googleToken.jsp](https://api.3cixty.com/v2/googleToken.jsp) on your web browser to get your `Google access_token`.\n - Once you have the `3cixty App key` please use the API as need. Note that some APIs use `3cixty access_token` while some need `Google access_token`. To get your `3cixty access_token` from `Google access_token` use the `/getAccessToken` API.\n   \n   \n Below are the Java code steps to be performed to successfully call the API you need\n \n - **Step 1**: use following code and specify the `<API>` parameter.\n \n   <pre class=\"brush: java\">URL url = new URL(\"https:\\\\api.3cixty.com\\v2\\&lt;API&gt;\"));\n   </pre>\n \n - **Step 2**: create the url connection as below. Here `<TYPE>` is either `GET` or `POST`\n \n   <pre class=\"brush: java\">URLConnection urlConn = url.openConnection();\n   ((HttpURLConnection) urlConn).setRequestMethod(\"&ltTYPE&gt\");\n   </pre>\n \n - **Step 3**: Based on what parameters are required by the `<API>`, you need to either set the following:\n \n   - for header paramaters\n     <pre class=\"brush: java\">con.setRequestProperty(\"access_token\", &lt;ThreeCixtyAccessToken&gt;);\n     //similary set other header parameters\n     ...\n     </pre>\n   \n   - for query parameters in the **Step 1**  provide the paramters in the `URL` itself. For example:\n     <pre class=\"brush: java\">URL url = new URL(\"https:\\\\api.3cixty.com\\v2\\&lt;API&gt;?\n     google_access_token=\"&lt;googleAccessToken&gt;\" + \n     \"&amp;appid=\" + &lt;appid&gt; +\n     \"&amp;appname=\" + URLEncoder.encode(&lt;appname&gt;, \"UTF-8\") +\n     \"&amp;category=\" + URLEncoder.encode(&lt;cat&gt;, \"UTF-8\")+\n     \"&amp;scopeName=\" + URLEncoder.encode(&lt;scope&gt;, \"UTF-8\") + \n     \"&amp;description=\" + URLEncoder.encode(&lt;desc&gt;, \"UTF-8\") +\n     \"&amp;redirect_uri=\" + URLEncoder.encode(&lt;redirect_uri&gt;, \"UTF-8\") + \n     \"&amp;thumbNailUrl=\" + URLEncoder.encode(&lt;thumbNailUrl&gt;, \"UTF-8\"))\"));\n     </pre>\n   \n   - for `JSON` input in the body use:\n   \n     <pre class=\"brush: java\">String jsonString=\"&lt;json&gt;\";\n     </pre>\n \n - **Step 4**: Depending on the above step, \n   \n   - for `JSON` as the input, use: \n     <pre class=\"brush: java\">OutputStreamWriter writer = new OutputStreamWriter(urlConn.getOutputStream());\n     writer.write(jsonString.getBytes(UTF8));\n     </pre>\n   \n   - for other case, use:\n     <pre class=\"brush: java\">InputStream input = urlConn.getInputStream();\n     StringBuffer buffer = new StringBuffer();\n     byte[] b = new byte[1024];\n     int readBytes = 0;\n     while (true) { \n       readBytes = input.read(b);\n       if (readBytes &lt; 0) break;\n       buffer.append(new String(b, 0, readBytes));\n     }\n     input.close();\n     JSONObject json = new JSONObject(buffer.toString());\n     ...\n     </pre>\n",
         "version": "2.0.0",
         "title": "3cixty APIs",
@@ -16,10 +15,10 @@
             "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
         }
     },
-    "host": "localhost:8080",
+    "host": "dev.3cixty.com",
     "basePath": "/v2",
     "schemes": [
-        "http"
+        "https"
     ],
     "paths": {
         "/augmentAndExecute": {
@@ -357,6 +356,7 @@
                     {
                         "name": "Accept-Language",
                         "in": "header",
+                        "description": "This header parameter is optional. If you don't specify it, all languages will be checked and we return data in one of the languages. You can use a format like `fr-FR`, `en-EN`, `en-US`, `fr`, `en`, `it`. You should use one of them.\n",
                         "required": true,
                         "type": "string"
                     },
@@ -1001,6 +1001,7 @@
                     {
                         "name": "Accept-Language",
                         "in": "header",
+                        "description": "This header parameter is optional. If you don't specify it, all languages will be checked and we return data in one of the languages. You can use a format like `fr-FR`, `en-EN`, `en-US`, `fr`, `en`, `it`. You should use one of them.\n",
                         "required": true,
                         "type": "string"
                     },
@@ -1083,6 +1084,7 @@
                     {
                         "name": "Accept-Language",
                         "in": "header",
+                        "description": "This header parameter is optional. If you don't specify it, all languages will be checked and we return data in one of the languages. You can use a format like `fr-FR`, `en-EN`, `en-US`, `fr`, `en`, `it`. You should use one of them.\n",
                         "required": true,
                         "type": "string"
                     },
@@ -1172,6 +1174,7 @@
                     {
                         "name": "Accept-Language",
                         "in": "header",
+                        "description": "This header parameter is optional. If you don't specify it, all languages will be checked and we return data in one of the languages. You can use a format like `fr-FR`, `en-EN`, `en-US`, `fr`, `en`, `it`. You should use one of them.\n",
                         "required": true,
                         "type": "string"
                     },
@@ -1206,6 +1209,7 @@
                     {
                         "name": "categories",
                         "in": "query",
+                        "description": "\"is a list of categories. Two categories are separated by a comma, for example: `Restaurant` or `Restaurant,Hotel`. This parameter is optional. If you don't provide it, it will take into account of all categories related to PoIs. Here is a list of top 20 categories (please use only `Establishment` for example, we show a list in `JSON` format to have an idea about number of items in the corresponding category).\\n\\n ```json\\n  [  \\n    {  \\n      \\\"count\\\":{  \\n        \\\"value\\\":\\\"71935\\\"\\n      },\\n      \\\"category\\\":{  \\n        \\\"value\\\":\\\"Establishment\\\"\\n      }\\n    },\\n    {  \\n      \\\"count\\\":{  \\n        \\\"value\\\":\\\"12017\\\"\\n      },\\n      \\\"category\\\":{  \\n        \\\"value\\\":\\\"Restaurant\\\"\\n      }\\n    },\\n    {  \\n      \\\"count\\\":{  \\n        \\\"value\\\":\\\"11045\\\"\\n      },\\n      \\\"category\\\":{  \\n        \\\"value\\\":\\\"Home (private)\\\"\\n      }\\n    },\\n    {  \\n      \\\"count\\\":{  \\n        \\\"value\\\":\\\"8085\\\"\\n      },\\n      \\\"category\\\":{  \\n        \\\"value\\\":\\\"Store\\\"\\n      }\\n    },\\n    {  \\n      \\\"count\\\":{  \\n        \\\"value\\\":\\\"6031\\\"\\n      },\\n      \\\"category\\\":{  \\n        \\\"value\\\":\\\"Bar\\\"\\n      }\\n    },\\n    {  \\n      \\\"count\\\":{  \\n        \\\"value\\\":\\\"4916\\\"\\n      },\\n      \\\"category\\\":{  \\n        \\\"value\\\":\\\"Food\\\"\\n      }\\n    },\\n    {  \\n      \\\"count\\\":{  \\n        \\\"value\\\":\\\"3796\\\"\\n      },\\n      \\\"category\\\":{  \\n        \\\"value\\\":\\\"Office\\\"\\n      }\\n    },\\n    {  \\n      \\\"count\\\":{  \\n        \\\"value\\\":\\\"2766\\\"\\n      },\\n      \\\"category\\\":{  \\n        \\\"value\\\":\\\"Health\\\"\\n      }\\n    },\\n    {  \\n      \\\"count\\\":{  \\n        \\\"value\\\":\\\"2536\\\"\\n      },\\n \\\"category\\\":{  \\n        \\\"value\\\":\\\"Hotel\\\"\\n      }\\n    },\\n    {  \\n      \\\"count\\\":{  \\n        \\\"value\\\":\\\"2391\\\"\\n      },\\n      \\\"category\\\":{  \\n        \\\"value\\\":\\\"Cafe\"\\n      }\\n    },\\n    {  \\n      \\\"count\\\":{  \\n        \\\"value\\\":\\\"1956\\\"\\n      },\\n      \\\"category\\\":{  \\n        \\\"value\\\":\\\"Finance\\\"\\n      }\\n    },\\n    {  \\n      \\\"count\\\":{  \\n        \\\"value\\\":\\\"1735\\\"\\n      },\\n      \\\"category\\\":{  \\n        \\\"value\\\":\\\"Italian Restaurant\\\"\\n      }\\n    },\\n    {  \\n      \\\"count\\\":{  \\n        \\\"value\\\":\\\"1724\\\"\\n      },\\n      \\\"category\\\":{  \\n        \\\"value\\\":\\\"Bank\\\"\\n      }\\n    },\\n    {  \\n      \\\"count\\\":{  \\n        \\\"value\\\":\\\"1620\\\"\\n      },\\n      \\\"category\\\":{  \\n        \\\"value\\\":\\\"Lawyers\\\"\\n      }\\n    },\\n    {  \\n      \\\"count\\\":{  \\n        \\\"value\\\":\\\"1482\\\"\\n      },\\n      \\\"category\\\":{  \\n        \\\"value\\\":\\\"Bars\\\"\\n      }\\n    },\\n    {  \\n      \\\"count\\\":{  \\n        \\\"value\\\":\\\"1465\\\"\\n      },\\n      \\\"category\\\":{  \\n        \\\"value\\\":\\\"Italian\\\"\\n      }\\n    },\\n    {  \\n      \\\"count\\\":{  \\n        \\\"value\\\":\\\"1447\\\"\\n      },\\n      \\\"category\\\":{  \\n        \\\"value\\\":\\\"Hair Salons\\\"\\n      }\\n    },\\n    {  \\n      \\\"count\\\":{  \\n        \\\"value\\\":\\\"1416\\\"\\n      },\\n      \\\"category\\\":{  \\n        \\\"value\\\":\\\"Residential Building (Apartment / Condo)\\\"\\n      }\\n    },\\n    {  \\n      \\\"count\\\":{  \\n        \\\"value\\\":\\\"1405\\\"\\n      },\\n      \\\"category\\\":{  \\n        \\\"value\\\":\\\"Building\\\"\\n      }\\n    },\\n    {  \\n      \\\"count\\\":{  \\n        \\\"value\\\":\\\"1395\\\"\\n      },\\n      \\\"category\\\":{  \\n        \\\"value\\\":\\\"Pizza Place\\\"\\n      }\\n    }\\n   ]\\n\\n ```\\n\"\n",
                         "default": "",
                         "type": "string"
                     },
@@ -1268,7 +1272,7 @@
                     {
                         "name": "Accept-Language",
                         "in": "header",
-                        "description": "This header parameter is optional. If you donâ€™t specify it, all languages will be checked and we return data in one of the languages. You can use a format like `fr-FR`, `en-EN`, `en-US`, `fr`, `en`, `it`. You should use one of them.\n",
+                        "description": "This header parameter is optional. If you don't specify it, all languages will be checked and we return data in one of the languages. You can use a format like `fr-FR`, `en-EN`, `en-US`, `fr`, `en`, `it`. You should use one of them.\n",
                         "required": true,
                         "type": "string"
                     },
@@ -1312,7 +1316,7 @@
                     {
                         "name": "categories",
                         "in": "query",
-                        "description": "is a list of categories. Two categories are separated by a comma, for example: `Restaurant` or `Restaurant,Hotel`. This parameter is optional. If you don't provide it, it will take into account of all categories related to PoIs. Here is a list of top 20 categories (please use only `Establishment` for example, we show a list in `JSON` format to have an idea about number of items in the corresponding category).\n\n ```json\n  [  \n    {  \n      \"count\":{  \n        \"value\":\"71935\"\n      },\n      \"category\":{  \n        \"value\":\"Establishment\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"12017\"\n      },\n      \"category\":{  \n        \"value\":\"Restaurant\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"11045\"\n      },\n      \"category\":{  \n        \"value\":\"Home (private)\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"8085\"\n      },\n      \"category\":{  \n        \"value\":\"Store\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"6031\"\n      },\n      \"category\":{  \n        \"value\":\"Bar\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"4916\"\n      },\n      \"category\":{  \n        \"value\":\"Food\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"3796\"\n      },\n      \"category\":{  \n        \"value\":\"Office\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"2766\"\n      },\n      \"category\":{  \n        \"value\":\"Health\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"2536\"\n      },\n      \"category\":{  \n        \"value\":\"Hotel\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"2391\"\n      },\n      \"category\":{  \n        \"value\":\"CafÃ©\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"1956\"\n      },\n      \"category\":{  \n        \"value\":\"Finance\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"1735\"\n      },\n      \"category\":{  \n        \"value\":\"Italian Restaurant\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"1724\"\n      },\n      \"category\":{  \n        \"value\":\"Bank\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"1620\"\n      },\n      \"category\":{  \n        \"value\":\"Lawyers\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"1482\"\n      },\n      \"category\":{  \n        \"value\":\"Bars\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"1465\"\n      },\n      \"category\":{  \n        \"value\":\"Italian\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"1447\"\n      },\n      \"category\":{  \n        \"value\":\"Hair Salons\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"1416\"\n      },\n      \"category\":{  \n        \"value\":\"Residential Building (Apartment / Condo)\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"1405\"\n      },\n      \"category\":{  \n        \"value\":\"Building\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"1395\"\n      },\n      \"category\":{  \n        \"value\":\"Pizza Place\"\n      }\n    }\n   ]\n\n ```\n",
+                        "description": "is a list of categories. Two categories are separated by a comma, for example: `Restaurant` or `Restaurant,Hotel`. This parameter is optional. If you don't provide it, it will take into account of all categories related to PoIs. Here is a list of top 20 categories (please use only `Establishment` for example, we show a list in `JSON` format to have an idea about number of items in the corresponding category).\n\n ```json\n  [  \n    {  \n      \"count\":{  \n        \"value\":\"71935\"\n      },\n      \"category\":{  \n        \"value\":\"Establishment\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"12017\"\n      },\n      \"category\":{  \n        \"value\":\"Restaurant\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"11045\"\n      },\n      \"category\":{  \n        \"value\":\"Home (private)\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"8085\"\n      },\n      \"category\":{  \n        \"value\":\"Store\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"6031\"\n      },\n      \"category\":{  \n        \"value\":\"Bar\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"4916\"\n      },\n      \"category\":{  \n        \"value\":\"Food\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"3796\"\n      },\n      \"category\":{  \n        \"value\":\"Office\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"2766\"\n      },\n      \"category\":{  \n        \"value\":\"Health\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"2536\"\n      },\n      \"category\":{  \n        \"value\":\"Hotel\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"2391\"\n      },\n      \"category\":{  \n        \"value\":\"Cafe\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"1956\"\n      },\n      \"category\":{  \n        \"value\":\"Finance\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"1735\"\n      },\n      \"category\":{  \n        \"value\":\"Italian Restaurant\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"1724\"\n      },\n      \"category\":{  \n        \"value\":\"Bank\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"1620\"\n      },\n      \"category\":{  \n        \"value\":\"Lawyers\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"1482\"\n      },\n      \"category\":{  \n        \"value\":\"Bars\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"1465\"\n      },\n      \"category\":{  \n        \"value\":\"Italian\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"1447\"\n      },\n      \"category\":{  \n        \"value\":\"Hair Salons\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"1416\"\n      },\n      \"category\":{  \n        \"value\":\"Residential Building (Apartment / Condo)\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"1405\"\n      },\n      \"category\":{  \n        \"value\":\"Building\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"1395\"\n      },\n      \"category\":{  \n        \"value\":\"Pizza Place\"\n      }\n    }\n   ]\n\n ```\n",
                         "default": "",
                         "type": "string"
                     },
@@ -1375,7 +1379,7 @@
                     {
                         "name": "Accept-Language",
                         "in": "header",
-                        "description": "This header parameter is optional. If you donâ€™t specify it, all languages will be checked and we return data in one of the languages. You can use a format like `fr-FR`, `en-EN`, `en-US`, `fr`, `en`, `it`. You should use one of them.\n",
+                        "description": "This header parameter is optional. If you don't specify it, all languages will be checked and we return data in one of the languages. You can use a format like `fr-FR`, `en-EN`, `en-US`, `fr`, `en`, `it`. You should use one of them.\n",
                         "required": true,
                         "type": "string"
                     },
@@ -1466,7 +1470,7 @@
                     {
                         "name": "Accept-Language",
                         "in": "header",
-                        "description": "This header parameter is optional. If you donâ€™t specify it, all languages will be checked and we return data in one of the languages. You can use a format like `fr-FR`, `en-EN`, `en-US`, `fr`, `en`, `it`. You should use one of them.\n",
+                        "description": "This header parameter is optional. If you don't specify it, all languages will be checked and we return data in one of the languages. You can use a format like `fr-FR`, `en-EN`, `en-US`, `fr`, `en`, `it`. You should use one of them.\n",
                         "required": true,
                         "type": "string"
                     },
@@ -1551,7 +1555,7 @@
                     "QueryManager/Augmentation API - REST API"
                 ],
                 "summary": "Get nearby PoIs to a given GPS location based on Wish List",
-                "description": "The API is used to augment nearby POIs from a given GPS location. Nearby PoI augmentation is a feature to get nearby PoIs highlighting ones found from WishLists of friends list. The order of received nearby PoIs is first based on \"highlighted\" attribute, then distance is taken as the second key to decide the order if two PoIs have the same \"highlighted attribute\"â€\n",
+                "description": "The API is used to augment nearby POIs from a given GPS location. Nearby PoI augmentation is a feature to get nearby PoIs highlighting ones found from WishLists of friends list. The order of received nearby PoIs is first based on \"highlighted\" attribute, then distance is taken as the second key to decide the order if two PoIs have the same \"highlighted attribute\".\n",
                 "produces": [
                     "application/json"
                 ],
@@ -1566,7 +1570,7 @@
                     {
                         "name": "Accept-Language",
                         "in": "header",
-                        "description": "This header parameter is optional. If you donâ€™t specify it, all languages will be checked and we return data in one of the languages. You can use a format like `fr-FR`, `en-EN`, `en-US`, `fr`, `en`, `it`. You should use one of them.\n",
+                        "description": "This header parameter is optional. If you don't specify it, all languages will be checked and we return data in one of the languages. You can use a format like `fr-FR`, `en-EN`, `en-US`, `fr`, `en`, `it`. You should use one of them.\n",
                         "required": true,
                         "type": "string"
                     },
@@ -1610,7 +1614,7 @@
                     {
                         "name": "categories",
                         "in": "query",
-                        "description": "is a list of categories. Two categories are separated by a comma, for example: `Restaurant` or `Restaurant,Hotel`. This parameter is optional. If you don't provide it, it will take into account of all categories related to PoIs. Here is a list of top 20 categories (please use only `Establishment` for example, we show a list in `JSON` format to have an idea about number of items in the corresponding category).\n\n ```json\n  [  \n    {  \n      \"count\":{  \n        \"value\":\"71935\"\n      },\n      \"category\":{  \n        \"value\":\"Establishment\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"12017\"\n      },\n      \"category\":{  \n        \"value\":\"Restaurant\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"11045\"\n      },\n      \"category\":{  \n        \"value\":\"Home (private)\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"8085\"\n      },\n      \"category\":{  \n        \"value\":\"Store\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"6031\"\n      },\n      \"category\":{  \n        \"value\":\"Bar\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"4916\"\n      },\n      \"category\":{  \n        \"value\":\"Food\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"3796\"\n      },\n      \"category\":{  \n        \"value\":\"Office\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"2766\"\n      },\n      \"category\":{  \n        \"value\":\"Health\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"2536\"\n      },\n      \"category\":{  \n        \"value\":\"Hotel\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"2391\"\n      },\n      \"category\":{  \n        \"value\":\"CafÃ©\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"1956\"\n      },\n      \"category\":{  \n        \"value\":\"Finance\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"1735\"\n      },\n      \"category\":{  \n        \"value\":\"Italian Restaurant\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"1724\"\n      },\n      \"category\":{  \n        \"value\":\"Bank\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"1620\"\n      },\n      \"category\":{  \n        \"value\":\"Lawyers\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"1482\"\n      },\n      \"category\":{  \n        \"value\":\"Bars\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"1465\"\n      },\n      \"category\":{  \n        \"value\":\"Italian\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"1447\"\n      },\n      \"category\":{  \n        \"value\":\"Hair Salons\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"1416\"\n      },\n      \"category\":{  \n        \"value\":\"Residential Building (Apartment / Condo)\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"1405\"\n      },\n      \"category\":{  \n        \"value\":\"Building\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"1395\"\n      },\n      \"category\":{  \n        \"value\":\"Pizza Place\"\n      }\n    }\n   ]\n\n ```\n",
+                        "description": "is a list of categories. Two categories are separated by a comma, for example: `Restaurant` or `Restaurant,Hotel`. This parameter is optional. If you don't provide it, it will take into account of all categories related to PoIs. Here is a list of top 20 categories (please use only `Establishment` for example, we show a list in `JSON` format to have an idea about number of items in the corresponding category).\n\n ```json\n  [  \n    {  \n      \"count\":{  \n        \"value\":\"71935\"\n      },\n      \"category\":{  \n        \"value\":\"Establishment\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"12017\"\n      },\n      \"category\":{  \n        \"value\":\"Restaurant\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"11045\"\n      },\n      \"category\":{  \n        \"value\":\"Home (private)\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"8085\"\n      },\n      \"category\":{  \n        \"value\":\"Store\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"6031\"\n      },\n      \"category\":{  \n        \"value\":\"Bar\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"4916\"\n      },\n      \"category\":{  \n        \"value\":\"Food\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"3796\"\n      },\n      \"category\":{  \n        \"value\":\"Office\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"2766\"\n      },\n      \"category\":{  \n        \"value\":\"Health\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"2536\"\n      },\n      \"category\":{  \n        \"value\":\"Hotel\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"2391\"\n      },\n      \"category\":{  \n        \"value\":\"Cafe\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"1956\"\n      },\n      \"category\":{  \n        \"value\":\"Finance\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"1735\"\n      },\n      \"category\":{  \n        \"value\":\"Italian Restaurant\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"1724\"\n      },\n      \"category\":{  \n        \"value\":\"Bank\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"1620\"\n      },\n      \"category\":{  \n        \"value\":\"Lawyers\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"1482\"\n      },\n      \"category\":{  \n        \"value\":\"Bars\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"1465\"\n      },\n      \"category\":{  \n        \"value\":\"Italian\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"1447\"\n      },\n      \"category\":{  \n        \"value\":\"Hair Salons\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"1416\"\n      },\n      \"category\":{  \n        \"value\":\"Residential Building (Apartment / Condo)\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"1405\"\n      },\n      \"category\":{  \n        \"value\":\"Building\"\n      }\n    },\n    {  \n      \"count\":{  \n        \"value\":\"1395\"\n      },\n      \"category\":{  \n        \"value\":\"Pizza Place\"\n      }\n    }\n   ]\n\n ```\n",
                         "default": "",
                         "type": "string"
                     },
@@ -1673,7 +1677,7 @@
                     {
                         "name": "Accept-Language",
                         "in": "header",
-                        "description": "This header parameter is optional. If you donâ€™t specify it, all languages will be checked and we return data in one of the languages. You can use a format like `fr-FR`, `en-EN`, `en-US`, `fr`, `en`, `it`. You should use one of them.\n",
+                        "description": "This header parameter is optional. If you don't specify it, all languages will be checked and we return data in one of the languages. You can use a format like `fr-FR`, `en-EN`, `en-US`, `fr`, `en`, `it`. You should use one of them.\n",
                         "required": true,
                         "type": "string"
                     },
@@ -1821,7 +1825,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "returns HTTP response with `JSON` Result set in the entity. Where the entity is list of top categories.\n An example is `[\"ARTS&ENTERTAINMENT\",\"COLLEGE&UNIVERSITY\",\"EVENT\",\"FAMILY FRIENDLY\",\"FOOD\",\"NIGHTLIFE\",\"OUTDOORS&RECREATION\",\"PROFESSIONAL&OTHER\",\"RESIDENCE\",\"SHOP&SERVICE\",\"TRAVEL&TRANSPORT\",\"MISCELLANOUS\"]`\n",
+                        "description": "returns HTTP response with `JSON` Result set in the entity. Where the entity is list of top categories.\n\n An example is\n`[\"ARTS&ENTERTAINMENT\",\"COLLEGE&UNIVERSITY\",\"EVENT\",\"FAMILY FRIENDLY\",\"FOOD\",\"NIGHTLIFE\",\"OUTDOORS&RECREATION\",\"PROFESSIONAL&OTHER\",\"RESIDENCE\",\"SHOP&SERVICE\",\"TRAVEL&TRANSPORT\",\"MISCELLANOUS\"]`\n",
                         "schema": {
                             "$ref": "#/definitions/result"
                         }
@@ -1985,7 +1989,7 @@
                         }
                     },
                     "400": {
-                        "description": "On the failure an appropriate HTTP status code with a message is returned. Some example of returned messages are:\n - Invalid parameters\n - Invalid parameters or duplicated tray items\n - Failed to understand your tray request\n - The key is invalid\n",
+                        "description": "On the failure an appropriate HTTP status code with a message is returned. Some example of returned messages are:\n\n - Invalid parameters\n\n - Invalid parameters or duplicated tray items\n\n - Failed to understand your tray request\n\n - The key is invalid\n",
                         "schema": {
                             "type": "string"
                         }
@@ -2213,7 +2217,7 @@
                     "GoflowIntegration API - REST API"
                 ],
                 "summary": "Register an App on GoFlow server",
-                "description": "**This API should not be used by App developers as this API is already referenced when you get a `3cixty App key`.**\n\nThe return of the HTTP request is in JSON format.\n- If the `HTTP status code = 400`, it means that the api failed to register your App.\n- If the `HTTP status code = 200`, it means that the api was successful to register your App.\n",
+                "description": "**This API should not be used by App developers as this API is already referenced when you get a `3cixty App key`.**\n\n\nThe return of the HTTP request is in JSON format.\n- If the `HTTP status code = 400`, it means that the api failed to register your App.\n- If the `HTTP status code = 200`, it means that the api was successful to register your App.\n",
                 "produces": [
                     "application/json"
                 ],
@@ -2277,7 +2281,7 @@
                     "GoflowIntegration API - REST API"
                 ],
                 "summary": "Create or retrieve a GoFlow developer account credentials",
-                "description": "This API is used to create or retrieve a `GoFlow` account for developers to communicate with `GoFlow` server.\nThe return of HTTP request is in the JSON format.\n\n - If the `HTTP status code = 400`, it means the provided `3cixty access_token` is invalid\n - If the `HTTP status code = 200`, it means either:\n   - If your response text is an empty `JSON` object (equal to `{}`), it means the API failed to create or retrieve `GoFlow` account associated with the provided `3cixty access_token`.\n   - Otherwise the response `JSON` is of the following format: `{\"username\": \"<username>\", \"password\": \"<password>\", \"appid\": \"<appid>\"}` where the values `<username>` and `<password>` are `GoFlow` account information associated with the provided `3cixty access_token` and `<appid>` is the associated app of the developer.\n",
+                "description": "This API is used to create or retrieve a `GoFlow` account for developers to communicate with `GoFlow` server.\nThe return of HTTP request is in the JSON format.\n\n\n\n - If the `HTTP status code = 400`, it means the provided `3cixty\naccess_token` is invalid\n\n - If the `HTTP status code = 200`, it means either:\n\n   - If your response text is an empty `JSON` object (equal to `{}`), it\nmeans the API failed to create or retrieve `GoFlow` account associated with the provided `3cixty access_token`.\n\n   - Otherwise the response `JSON` is of the following format:\n`{\"username\": \"<username>\", \"password\": \"<password>\", \"appid\": \"<appid>\"}` where the values `<username>` and `<password>` are `GoFlow` account information associated with the provided `3cixty access_token` and `<appid>` is the associated app of the developer.\n",
                 "produces": [
                     "application/json"
                 ],
@@ -2312,7 +2316,7 @@
                         }
                     },
                     "400": {
-                        "description": "On the failure an appropriate message from the following is returned. The return is in following `JSON` format `{\"response\": false, \"reason\": \"<message>\"}`. Some example of returned messages are:\n - The access token is invalid\n - Cannot create user at GoFlow\n",
+                        "description": "On the failure an appropriate message from the following is returned. The return is in following `JSON` format `{\"response\": false, \"reason\": \"<message>\"}`. Some example of returned messages are:\n\n - The access token is invalid\n\n - Cannot create user at GoFlow\n",
                         "schema": {
                             "type": "object",
                             "properties": {
@@ -2342,7 +2346,7 @@
                     "GoflowIntegration API - REST API"
                 ],
                 "summary": "Create or retrieve a GoFlow user account credentials",
-                "description": "This api is used to create or retrieve a `GoFlow` user account based on a `3cixty access_token.\nThe return of HTTP request is in the JSON format.\n\n - If the `HTTP status code = 400`, it means the provided `3cixty access_token` is invalid\n - If the `HTTP status code = 200`, it means either:\n   - If your response text is an empty `JSON` object (equal to `{}`), it means the API failed to create or retrieve `GoFlow` account associated with the provided `3cixty access_token`.\n   - Otherwise the response `JSON` is of the following format: `{\"username\": \"<username>\", \"password\": \"<password>\", \"appid\": \"<appid>\"}` where the values `<username>` and `<password>` are `GoFlow` account information associated with the provided `3cixty access_token` and `<appid>` is the associated app used by the user.\n",
+                "description": "This api is used to create or retrieve a `GoFlow` user account based on a `3cixty access_token.\nThe return of HTTP request is in the JSON format.\n\n\n\n - If the `HTTP status code = 400`, it means the provided `3cixty\naccess_token` is invalid\n\n - If the `HTTP status code = 200`, it means either:\n\n   - If your response text is an empty `JSON` object (equal to `{}`), it\nmeans the API failed to create or retrieve `GoFlow` account associated with the provided `3cixty access_token`.\n\n   - Otherwise the response `JSON` is of the following format:\n`{\"username\": \"<username>\", \"password\": \"<password>\", \"appid\": \"<appid>\"}` where the values `<username>` and `<password>` are `GoFlow` account information associated with the provided `3cixty access_token` and `<appid>` is the associated app used by the user.\n",
                 "produces": [
                     "application/json"
                 ],
@@ -2377,7 +2381,7 @@
                         }
                     },
                     "400": {
-                        "description": "On the failure an appropriate message from the following is returned. The return is in following `JSON` format `{\"response\": false, \"reason\": \"<message>\"}`. Some example of returned messages are:\n - The access token is invalid\n - Cannot create user at GoFlow\n",
+                        "description": "On the failure an appropriate message from the following is returned. The return is in following `JSON` format `{\"response\": false, \"reason\": \"<message>\"}`. Some example of returned messages are:\n\n - The access token is invalid\n\n - Cannot create user at GoFlow\n",
                         "schema": {
                             "type": "object",
                             "properties": {
@@ -2454,7 +2458,7 @@
                         }
                     },
                     "400": {
-                        "description": "On the failure an appropriate message from the following is returned. Some example of returned messages are:\n - You are not allowed to access the user profile\n - There is no information of your profile in the KB\n - The access token is invalid\n",
+                        "description": "On the failure an appropriate message from the following is returned. Some example of returned messages are:\n\n - You are not allowed to access the user profile\n\n - There is no information of your profile in the KB\n\n - The access token is invalid\n",
                         "schema": {
                             "type": "string"
                         }
@@ -2774,7 +2778,7 @@
                         }
                     },
                     "400": {
-                        "description": "On the failure an appropriate message is returned. You will get an error message like `{\"response\": \"failed\", \"reason\": \"<reason>\"}`.\nError reasons returned are:\n - App key is invalid\n - App key is not allowed to get access token\n - Google access token is invalid or expired\n - scope is invalid\n - Internal errors\n",
+                        "description": "On the failure an appropriate message is returned. You will get an error message like `{\"response\": \"failed\", \"reason\": \"<reason>\"}`.\nError reasons returned are:\n\n - App key is invalid\n\n - App key is not allowed to get access token\n\n - Google access token is invalid or expired\n\n - scope is invalid\n\n - Internal errors\n",
                         "schema": {
                             "type": "object",
                             "properties": {
@@ -2859,7 +2863,7 @@
                         }
                     },
                     "400": {
-                        "description": "On the failure an appropriate message is returned. You will get an error message like `{\"response\": \"failed\", \"reason\": \"<reason>\"}`.\nError reasons returned are:\n - App key is invalid\n - App key is not allowed to get access token\n - Facebook access token is invalid or expired\n - scope is invalid\n - Internal errors\n",
+                        "description": "On the failure an appropriate message is returned. You will get an error message like `{\"response\": \"failed\", \"reason\": \"<reason>\"}`.\nError reasons returned are:\n\n - App key is invalid\n\n - App key is not allowed to get access token\n\n - Facebook access token is invalid or expired\n\n - scope is invalid\n\n - Internal errors\n",
                         "schema": {
                             "type": "object",
                             "properties": {
@@ -2889,7 +2893,7 @@
                     "OAuth API - REST API"
                 ],
                 "summary": "Validate 3cixty access_token",
-                "description": "Verify a `3cixty access_token`. This can be used to know if a developer needs to refresh the `3cixty access_token`.\n\nThe return of your HTTP request is in `JSON` format. If the validation is successful, the `3cixty` Platform will respond a message like `{\"response\": \"ok\"}` to you ; otherwise, you will get an error message like `{\"response\": \"failed\", \"reason\": \"<reason>\"}`.\n\nError reasons returned are:\n - Access Token is invalid\n - App key is invalid\n",
+                "description": "Verify a `3cixty access_token`. This can be used to know if a developer needs to refresh the `3cixty access_token`.\n\n\nThe return of your HTTP request is in `JSON` format. If the validation is successful, the `3cixty` Platform will respond a message like `{\"response\": \"ok\"}` to you ; otherwise, you will get an error message like `{\"response\": \"failed\", \"reason\": \"<reason>\"}`.\n\n\nError reasons returned are:\n\n - Access Token is invalid\n\n - App key is invalid\n",
                 "produces": [
                     "application/json"
                 ],
@@ -2923,7 +2927,7 @@
                         }
                     },
                     "400": {
-                        "description": "On the failure an appropriate message is returned. You will get an error message like `{\"response\": \"failed\", \"reason\": \"<reason>\"}`.\nError reasons returned are:\n - Access Token is invalid\n - App key is invalid\n",
+                        "description": "On the failure an appropriate message is returned. You will get an error message like `{\"response\": \"failed\", \"reason\": \"<reason>\"}`.\nError reasons returned are:\n\n - Access Token is invalid\n\n - App key is invalid\n",
                         "schema": {
                             "type": "string"
                         }
@@ -2943,7 +2947,7 @@
                     "OAuth API - REST API"
                 ],
                 "summary": "Get all 3cixty apps associated to Google Access token",
-                "description": "This API is used to get apps attached to a given `Google access_token` in the `3cixty` Platform.\n\nThe return of your HTTP request is in `JSON` format. If the validation is successful, the `3cixty` Platform will respond a message as shown below to you; otherwise, you will get an error message, for example `{\"response\": \"failed\", \"reason\": \"<reson>\"}`.\n\nError reasons returned are:\n- Google access token is invalid or expired\n\nReturns for `format=json`:\n```json\n [{\"key\": \"<Appkey>\", \"id\": \"<Appid>\", \"name\": \"<nameoftheapp>\", \"description\": \"<description>\", \"scopes\": \"<scopes>\", \"redirect_uri\": \"<redirect-url>\", \"logo\": \"<applogo>\"}]\n```\n",
+                "description": "This API is used to get apps attached to a given `Google access_token` in the `3cixty` Platform.\n\n\nThe return of your HTTP request is in `JSON` format. If the validation is successful, the `3cixty` Platform will respond a message as shown below to you; otherwise, you will get an error message, for example `{\"response\": \"failed\", \"reason\": \"<reson>\"}`.\n\n\nError reasons returned are:\n- Google access token is invalid or expired\n\n\nReturns for `format=json`:\n```json\n\n [{\"key\": \"<Appkey>\", \"id\": \"<Appid>\", \"name\": \"<nameoftheapp>\",\n\"description\": \"<description>\", \"scopes\": \"<scopes>\", \"redirect_uri\": \"<redirect-url>\", \"logo\": \"<applogo>\"}]\n```\n",
                 "produces": [
                     "application/json",
                     "text/html"
@@ -2976,7 +2980,7 @@
                         }
                     },
                     "400": {
-                        "description": "On the failure an appropriate message is returned. You will get an error message of type `{\"response\": \"failed\", \"reason\": \"<reason>\"}`. Error reasons returned are:\n - Google access token is invalid or expired\n",
+                        "description": "On the failure an appropriate message is returned. You will get an error message of type `{\"response\": \"failed\", \"reason\": \"<reason>\"}`. Error reasons returned are:\n\n - Google access token is invalid or expired\n",
                         "schema": {
                             "type": "string"
                         }
@@ -2996,7 +3000,7 @@
                     "OAuth API - REST API"
                 ],
                 "summary": "Get 3cixty App Key from Google Access token",
-                "description": "This API is used to retrieve `3cixty App Key` from `Google access_token` in the `3cixty` Platform.\n\nThe return of your HTTP request is in `JSON` format. If the validation is successful, the `3cixty` Platform will respond a message as `{\"key\": \"<ThreeCixtyAppkey>\"}` to you; otherwise, you will get an error message of the format: `{\"response\": \"failed\", \"reason\": \"<reson>\"}`.\n\nError reasons returned are:\n - Google access token is invalid or expired\n - appid doesn't exit\n",
+                "description": "This API is used to retrieve `3cixty App Key` from `Google access_token` in the `3cixty` Platform.\n\n\nThe return of your HTTP request is in `JSON` format. If the validation is successful, the `3cixty` Platform will respond a message as `{\"key\": \"<ThreeCixtyAppkey>\"}` to you; otherwise, you will get an error message of the format: `{\"response\": \"failed\", \"reason\": \"<reson>\"}`.\n\n\nError reasons returned are:\n\n - Google access token is invalid or expired\n\n - appid doesn't exit\n",
                 "produces": [
                     "application/json"
                 ],
@@ -3030,7 +3034,7 @@
                         }
                     },
                     "400": {
-                        "description": "On the failure an appropriate message from the following is returned. You will get an error message, for example `{\"response\": \"failed\", \"reason\": \"<reason>\"}`.\nError reasons returned are:\n - Google access token is invalid or expired\n - appid doesn't exit\n",
+                        "description": "On the failure an appropriate message from the following is returned. You will get an error message, for example `{\"response\": \"failed\", \"reason\": \"<reason>\"}`.\nError reasons returned are:\n\n - Google access token is invalid or expired\n\n - appid doesn't exit\n",
                         "schema": {
                             "type": "string"
                         }
@@ -3050,7 +3054,7 @@
                     "OAuth API - REST API"
                 ],
                 "summary": "Get 3cixty App key info",
-                "description": "This API is used to retrieve `3cixty App Key` information from a `3cixty App key`.\n\nThe return of your HTTP request is in `JSON` format. If the validation is successful, the `3cixty` Platform will respond a message as `{\"response\": \"found\", \"appid\":\"<appID>\", \"appname\": \"<AppName>\"}` to you; otherwise, you will get an error message of the format `{\"response\": \"<reason>\"}`.\n\nError reasons returned are:\n - not found\n",
+                "description": "This API is used to retrieve `3cixty App Key` information from a `3cixty App key`.\n\n\nThe return of your HTTP request is in `JSON` format. If the validation is successful, the `3cixty` Platform will respond a message as `{\"response\": \"found\", \"appid\":\"<appID>\", \"appname\": \"<AppName>\"}` to you; otherwise, you will get an error message of the format `{\"response\": \"<reason>\"}`.\n\n\nError reasons returned are:\n\n - not found\n",
                 "produces": [
                     "application/json"
                 ],
@@ -3085,7 +3089,7 @@
                         }
                     },
                     "400": {
-                        "description": "On the failure an appropriate message from the following is returned. You will get an error message, for example `{\"response\": \"<reason>\"}`.\nError reasons returned are:\n - not found\n",
+                        "description": "On the failure an appropriate message from the following is returned. You will get an error message, for example `{\"response\": \"<reason>\"}`.\nError reasons returned are:\n\n - not found\n",
                         "schema": {
                             "type": "string"
                         }
@@ -3105,7 +3109,7 @@
                     "OAuth API - REST API"
                 ],
                 "summary": "Get 3cixty App key info from 3cixty access_token",
-                "description": "This API is used to retrieve `3cixty App Key` information from a `3cixty access_token`.\n\nThe return of your HTTP request is in `JSON` format. If the validation is successful, the `3cixty` Platform will respond a message as `{\"response\": \"found\", \"appid\":\"<appID>\", \"appname\": \"<AppName>\"}` to you; otherwise, you will get an error message of the format `{\"response\": \"<reason>\"}`.\n\nError reasons returned are:\n - not found\n",
+                "description": "This API is used to retrieve `3cixty App Key` information from a `3cixty access_token`.\n\n\nThe return of your HTTP request is in `JSON` format. If the validation is successful, the `3cixty` Platform will respond a message as `{\"response\": \"found\", \"appid\":\"<appID>\", \"appname\": \"<AppName>\"}` to you; otherwise, you will get an error message of the format `{\"response\": \"<reason>\"}`.\n\n\nError reasons returned are:\n\n - not found\n",
                 "produces": [
                     "application/json"
                 ],
@@ -3140,7 +3144,7 @@
                         }
                     },
                     "400": {
-                        "description": "On the failure an appropriate message is returned. You will get an error message of the format `{\"response\": \"<reason>\"}`.\n\nError reasons returned are:\n - not found\n",
+                        "description": "On the failure an appropriate message is returned. You will get an error message of the format `{\"response\": \"<reason>\"}`.\n\n\nError reasons returned are:\n\n - not found\n",
                         "schema": {
                             "type": "string"
                         }
@@ -3238,7 +3242,7 @@
                         }
                     },
                     "400": {
-                        "description": "On the failure an appropriate message is returned. You will get an error message of the format `{\"response\": \"failed\", \"reason\": \"<reason>\"}`.\nError reasons returned are:\n - refresh token is invalid\n",
+                        "description": "On the failure an appropriate message is returned. You will get an error message of the format `{\"response\": \"failed\", \"reason\": \"<reason>\"}`.\nError reasons returned are:\n\n - refresh token is invalid\n",
                         "schema": {
                             "type": "object",
                             "properties": {
@@ -3295,7 +3299,7 @@
                         }
                     },
                     "400": {
-                        "description": "On the failure an appropriate message is returned. You will get an error message like `{\"response\": \"failed\", \"reason\": \"<reason>\"}`.\nError reasons returned are:\n - an invalid access token or internal error\n",
+                        "description": "On the failure an appropriate message is returned. You will get an error message like `{\"response\": \"failed\", \"reason\": \"<reason>\"}`.\nError reasons returned are:\n\n - an invalid access token or internal error\n",
                         "schema": {
                             "type": "object",
                             "properties": {
@@ -3387,6 +3391,7 @@
                     "OAuth API - REST API"
                 ],
                 "summary": "Create the 3cixty dedicated Account",
+                "description": "This Api is to be used to create the 3cixty dedicated Account on the 3cixty Platform.\nUpon sucessfull creation following message \"Your account has been created. Please check your email for a message from 3cixty that will enable you to activate the account.\" is displayed. Otherwise, on the failure an appropriate message is returned. some examples of message returns are:\n\n - App key is invalid\n\n - Email is empty\n\n - Email already existed\n\n - First name and last name cannot be empty\n",
                 "produces": [
                     "text/html"
                 ],
@@ -3432,6 +3437,7 @@
                         "description": "returns message \"Your account has been created. Please check your email for a message from 3cixty that will enable you to activate the account.\"\n"
                     },
                     "400": {
+                        "description": "On the failure an appropriate message is returned. some examples of message returns are:\n\n - App key is invalid\n\n - Email is empty\n\n - Email already existed\n\n - First name and last name cannot be empty\n"
                     },
                     "default": {
                         "description": "internal error\n",
@@ -3466,6 +3472,7 @@
                         "description": "returns message \"Your 3cixty account has been activated. You can return to the  website by going back to your previous tab or window. There, you can sign in using your new username and password.\"\n"
                     },
                     "400": {
+                        "description": "On the failure an appropriate message is returned. some examples of message returns are:\n\n - Activation code is empty\n\n - Failed to activate! Please check if your activation code is valid\n(one time-use)\n"
                     },
                     "default": {
                         "description": "internal error\n",
@@ -3507,6 +3514,7 @@
                         "description": "returns message \"Your password reset code has been successfully sent to `<emailAddress>`. Please check your inbox for the next step.\"\n"
                     },
                     "400": {
+                        "description": "On the failure an appropriate message is returned. some examples of message returns are:\n\n - Email is empty\n\n - App key is empty\n\n - Email is invalid\n\n - Sorry, this email does not exist in our database. Are you sure it\nis correct?\n\n - App key is invalid\n"
                     },
                     "default": {
                         "description": "internal error\n",
@@ -3541,6 +3549,7 @@
                         "description": "redirects to `https://api.3cixty.com/v2/setPassword.html`\n"
                     },
                     "400": {
+                        "description": "On the failure an appropriate message is returned. some examples of message returns are:\n\n - Reset code is empty\n\n - Failed to activate! Please check if your activation code is valid\n(one time-use)\n"
                     },
                     "default": {
                         "description": "internal error\n",
@@ -3575,6 +3584,7 @@
                         "description": "returns message \"Password updates successfully! Please click `< appUrl>` to proceed to the site.\"\n"
                     },
                     "400": {
+                        "description": "On the failure an appropriate message is returned. some examples of message returns are:\n\n - Session timeout or Invalid request\n\n - Failed to set a new password\n"
                     },
                     "default": {
                         "description": "internal error\n",
@@ -3623,6 +3633,7 @@
                         "description": "returns message \"Successful to change password!\"\n"
                     },
                     "400": {
+                        "description": "On the failure an appropriate message is returned. some examples of message returns are:\n\n - Email is empty\n\n - Email is invalid\n\n - Sorry, this email `<email>` does not exist in our database. Are\nyou sure it is correct?\n\n - Failed to change password! Please check your old password\n"
                     },
                     "default": {
                         "description": "internal error\n",
@@ -3671,6 +3682,7 @@
                         "description": "redirects to authorization page\n"
                     },
                     "400": {
+                        "description": "On the failure an appropriate message is returned. The return is in `JSON` format, for example `{\"response\": \"failed\", \"reason\": \"<message>\"}`. Some example of returned messages are:\n\n - App key is empty\n\n - App key is invalid\n\n - Email is empty\n\n - Email is invalid\n\n - Your email and password don't match!!!\n",
                         "schema": {
                             "type": "object",
                             "properties": {
@@ -3739,6 +3751,7 @@
                         "description": "returns `3cixty token`\n"
                     },
                     "400": {
+                        "description": "On the failure an appropriate message is returned. The return is in `JSON` format, for example `{\"response\": \"failed\", \"reason\": \"<message>\"}`. Some example of returned messages are:\n\n - App key is empty\n\n - App key is invalid\n\n - Email is empty\n\n - Email is invalid\n\n - Your email and password don't match!!!\n",
                         "schema": {
                             "type": "object",
                             "properties": {
@@ -3768,6 +3781,7 @@
                     "OAuth API - REST API"
                 ],
                 "summary": "Check if email exists in 3cixty Platform",
+                "description": "This Api is to be used to check if a given email exists in 3cixty Platform.\nIf the email exists the return is true. Otherwise, on the failure an appropriate message is returned. Some example of returned messages are:\n\n - Email is empty\n\n - Email is invalid\n",
                 "produces": [
                     "text/html"
                 ],
@@ -3785,6 +3799,7 @@
                         "description": "return true if exists\n"
                     },
                     "400": {
+                        "description": "On the failure an appropriate message is returned. Some example of returned messages are:\n\n - Email is empty\n\n - Email is invalid\n"
                     },
                     "default": {
                         "description": "internal error\n",
