@@ -1,9 +1,9 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "An overview of 3cixty APIs is provided here.\n\n**Getting Started:**\n\n - To get started depending on your needs you either need `3cixty App Key` or `3cixty access_token` or `Google access_token` or `Facebook access_token`. The only APIs where above mentioned parameters are not required are `/validate` (validate sparql query conformity with sparql 1.1) and `/getScope` (know scopes in 3cixty API).\n - To get the `3cixty App Key` please use the [link](appchallenge) alternatviely you can also use the `/getAppKey` API below. In such a case you will need your google access token please open [https://api.3cixty.com/v2/googleToken.jsp](https://api.3cixty.com/v2/googleToken.jsp) on your web browser to get your `Google access_token`.\n - Once you have the `3cixty App key` please use the API as need. Note that some APIs use `3cixty access_token` while some need `Google access_token`. To get your `3cixty access_token` from `Google access_token` use the `/getAccessToken` API.\n   \n   \n Below are the Java code steps to be performed to successfully call the API you need\n \n - **Step 1**: use following code and specify the `<API>` parameter.\n \n   <pre class=\"brush: java\">URL url = new URL(\"https:\\\\api.3cixty.com\\v2\\&lt;API&gt;\"));\n   </pre>\n \n - **Step 2**: create the url connection as below. Here `<TYPE>` is either `GET` or `POST`\n \n   <pre class=\"brush: java\">URLConnection urlConn = url.openConnection();\n   ((HttpURLConnection) urlConn).setRequestMethod(\"&ltTYPE&gt\");\n   </pre>\n \n - **Step 3**: Based on what parameters are required by the `<API>`, you need to either set the following:\n \n   - for header paramaters\n     <pre class=\"brush: java\">con.setRequestProperty(\"access_token\", &lt;ThreeCixtyAccessToken&gt;);\n     //similary set other header parameters\n     ...\n     </pre>\n   \n   - for query parameters in the **Step 1**  provide the paramters in the `URL` itself. For example:\n     <pre class=\"brush: java\">URL url = new URL(\"https:\\\\api.3cixty.com\\v2\\&lt;API&gt;?\n     google_access_token=\"&lt;googleAccessToken&gt;\" + \n     \"&amp;appid=\" + &lt;appid&gt; +\n     \"&amp;appname=\" + URLEncoder.encode(&lt;appname&gt;, \"UTF-8\") +\n     \"&amp;category=\" + URLEncoder.encode(&lt;cat&gt;, \"UTF-8\")+\n     \"&amp;scopeName=\" + URLEncoder.encode(&lt;scope&gt;, \"UTF-8\") + \n     \"&amp;description=\" + URLEncoder.encode(&lt;desc&gt;, \"UTF-8\") +\n     \"&amp;redirect_uri=\" + URLEncoder.encode(&lt;redirect_uri&gt;, \"UTF-8\") + \n     \"&amp;thumbNailUrl=\" + URLEncoder.encode(&lt;thumbNailUrl&gt;, \"UTF-8\"))\"));\n     </pre>\n   \n   - for `JSON` input in the body use:\n   \n     <pre class=\"brush: java\">String jsonString=\"&lt;json&gt;\";\n     </pre>\n \n - **Step 4**: Depending on the above step, \n   \n   - for `JSON` as the input, use: \n     <pre class=\"brush: java\">OutputStreamWriter writer = new OutputStreamWriter(urlConn.getOutputStream());\n     writer.write(jsonString.getBytes(UTF8));\n     </pre>\n   \n   - for other case, use:\n     <pre class=\"brush: java\">InputStream input = urlConn.getInputStream();\n     StringBuffer buffer = new StringBuffer();\n     byte[] b = new byte[1024];\n     int readBytes = 0;\n     while (true) { \n       readBytes = input.read(b);\n       if (readBytes &lt; 0) break;\n       buffer.append(new String(b, 0, readBytes));\n     }\n     input.close();\n     JSONObject json = new JSONObject(buffer.toString());\n     ...\n     </pre>\n",
+        "description": "An overview of 3cixty Developer APIs is provided here.\n\n**Getting Started:**\n\n - To get started depending on your needs you either need `3cixty App Key` or `3cixty access_token` or `Google access_token` or `Facebook access_token`. The only APIs where above mentioned parameters are not required are `/validate` (validate sparql query conformity with sparql 1.1) and `/getScope` (know scopes in 3cixty API).\n - To get the `3cixty App Key` please use the [link](appchallenge) alternatviely you can also use the `/getAppKey` API below. In such a case you will need your google access token please open [https://api.3cixty.com/v2/googleToken.jsp](https://api.3cixty.com/v2/googleToken.jsp) on your web browser to get your `Google access_token`.\n - Once you have the `3cixty App key` please use the API as need. Note that some APIs use `3cixty access_token` while some need `Google access_token`. To get your `3cixty access_token` from `Google access_token` use the `/getAccessToken` API.\n   \n   \n Below are the Java code steps to be performed to successfully call the API you need\n \n - **Step 1**: use following code and specify the `<API>` parameter.\n \n   <pre class=\"brush: java\">URL url = new URL(\"https:\\\\api.3cixty.com\\v2\\&lt;API&gt;\"));\n   </pre>\n \n - **Step 2**: create the url connection as below. Here `<TYPE>` is either `GET` or `POST`\n \n   <pre class=\"brush: java\">URLConnection urlConn = url.openConnection();\n   ((HttpURLConnection) urlConn).setRequestMethod(\"&ltTYPE&gt\");\n   </pre>\n \n - **Step 3**: Based on what parameters are required by the `<API>`, you need to either set the following:\n \n   - for header paramaters\n     <pre class=\"brush: java\">con.setRequestProperty(\"access_token\", &lt;ThreeCixtyAccessToken&gt;);\n     //similary set other header parameters\n     ...\n     </pre>\n   \n   - for query parameters in the **Step 1**  provide the paramters in the `URL` itself. For example:\n     <pre class=\"brush: java\">URL url = new URL(\"https:\\\\api.3cixty.com\\v2\\&lt;API&gt;?\n     google_access_token=\"&lt;googleAccessToken&gt;\" + \n     \"&amp;appid=\" + &lt;appid&gt; +\n     \"&amp;appname=\" + URLEncoder.encode(&lt;appname&gt;, \"UTF-8\") +\n     \"&amp;category=\" + URLEncoder.encode(&lt;cat&gt;, \"UTF-8\")+\n     \"&amp;scopeName=\" + URLEncoder.encode(&lt;scope&gt;, \"UTF-8\") + \n     \"&amp;description=\" + URLEncoder.encode(&lt;desc&gt;, \"UTF-8\") +\n     \"&amp;redirect_uri=\" + URLEncoder.encode(&lt;redirect_uri&gt;, \"UTF-8\") + \n     \"&amp;thumbNailUrl=\" + URLEncoder.encode(&lt;thumbNailUrl&gt;, \"UTF-8\"))\"));\n     </pre>\n   \n   - for `JSON` input in the body use:\n   \n     <pre class=\"brush: java\">String jsonString=\"&lt;json&gt;\";\n     </pre>\n \n - **Step 4**: Depending on the above step, \n   \n   - for `JSON` as the input, use: \n     <pre class=\"brush: java\">OutputStreamWriter writer = new OutputStreamWriter(urlConn.getOutputStream());\n     writer.write(jsonString.getBytes(UTF8));\n     </pre>\n   \n   - for other case, use:\n     <pre class=\"brush: java\">InputStream input = urlConn.getInputStream();\n     StringBuffer buffer = new StringBuffer();\n     byte[] b = new byte[1024];\n     int readBytes = 0;\n     while (true) { \n       readBytes = input.read(b);\n       if (readBytes &lt; 0) break;\n       buffer.append(new String(b, 0, readBytes));\n     }\n     input.close();\n     JSONObject json = new JSONObject(buffer.toString());\n     ...\n     </pre>\n",
         "version": "2.0.0",
-        "title": "3cixty APIs",
+        "title": "3cixty Developer APIs",
         "contact": {
             "name": "3cixty API support",
             "url": "https://www.3cixty.com/legal-information.html",
@@ -3312,68 +3312,6 @@
                                     "description": "message"
                                 }
                             }
-                        }
-                    },
-                    "default": {
-                        "description": "internal error\n",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/getUserRelatedInformation": {
-            "get": {
-                "tags": [
-                    "Profile API - REST API - 3cixty Admin API - remove"
-                ],
-                "summary": "Get the App User information by 3cixty Admin",
-                "description": "This API provides the App User information to the 3cixty admin.\n",
-                "produces": [
-                    "application/json"
-                ],
-                "parameters": [
-                    {
-                        "name": "username",
-                        "in": "header",
-                        "description": "3cixty admin username.\n",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "password",
-                        "in": "header",
-                        "description": "3cixty admin password.\n",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "key",
-                        "in": "header",
-                        "description": "3cixty app key. This is needed to identify App user \n",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "uid",
-                        "in": "query",
-                        "description": "3cixty user ID for which all information is requested.\n",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "returns HTTP response in a JSON format that contains all information about the user or a message \"No information about the given 3cixty UID\"\n",
-                        "schema": {
-                            "type": "object"
-                        }
-                    },
-                    "400": {
-                        "description": "If the HTTP status code response is 400, the return is following:\n - Username & password are not correct\n",
-                        "schema": {
-                            "type": "string"
                         }
                     },
                     "default": {
