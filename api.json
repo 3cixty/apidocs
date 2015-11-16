@@ -9,7 +9,7 @@
             "url": "https://www.3cixty.com/legal-information.html",
             "email": "support@3cixty.com"
         },
-        "termsOfService": "https://www.3cixty.com/terms.html",
+        "termsOfService": "https://api.3cixty.com/v2/terms.html",
         "license": {
             "name": "Apache 2.0",
             "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
@@ -3549,7 +3549,7 @@
                     "OAuth API - REST API"
                 ],
                 "summary": "Activate reset code for reseting the password",
-                "description": "This Api is to be used to activate the reset code for reseting the password for the 3cixty dedicated Account. \nUpon successfull activation you are redirected to https://api.3cixty.com/v2/setPassword.html`. Otherwise, on the failure an appropriate message is returned. some examples of message returns are:\n - Reset code is empty\n - Failed to activate! Please check if your activation code is valid (one time-use)\n",
+                "description": "This Api is to be used to activate the reset code for reseting the password for the 3cixty dedicated Account. \nUpon successfull activation you are redirected to https://api.3cixty.com/v2/setPassword.html. Otherwise, on the failure an appropriate message is returned. some examples of message returns are:\n - Reset code is empty\n - Failed to activate! Please check if your activation code is valid (one time-use)\n",
                 "produces": [
                     "text/html"
                 ],
@@ -3564,7 +3564,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "redirects to `https://api.3cixty.com/v2/setPassword.html`\n"
+                        "description": "redirects to https://api.3cixty.com/v2/setPassword.html\n"
                     },
                     "400": {
                         "description": "On the failure an appropriate message is returned. some examples of message returns are:\n\n - Reset code is empty\n\n - Failed to activate! Please check if your activation code is valid\n(one time-use)\n"
@@ -3584,7 +3584,7 @@
                     "OAuth API - REST API"
                 ],
                 "summary": "Set password for the 3cixty dedicated Account",
-                "description": "This Api is to be used to set password for the 3cixty dedicated Account. \nIf the setting of the password was successful on the 3cixty Platform, the platform returns \"Password updates successfully! Please click `&lt;appUrl&gt;` to proceed to the site.\" message. Otherwise, on the failure an appropriate message is returned. some examples of message returns are:\n - Session timeout or Invalid request\n - Failed to set a new password\n",
+                "description": "This Api is to be used to set password for the 3cixty dedicated Account. \nIf the setting of the password was successful on the 3cixty Platform, the platform returns \"Password updates successfully! Please click `<appUrl>` to proceed to the site.\" message. Otherwise, on the failure an appropriate message is returned. some examples of message returns are:\n - Session timeout or Invalid request\n - Failed to set a new password\n",
                 "produces": [
                     "text/html"
                 ],
@@ -3599,7 +3599,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "returns message \"Password updates successfully! Please click `&lt;appUrl&gt;` to proceed to the site.\"\n"
+                        "description": "returns message \"Password updates successfully! Please click `<appUrl>` to proceed to the site.\"\n"
                     },
                     "400": {
                         "description": "On the failure an appropriate message is returned. some examples of message returns are:\n\n - Session timeout or Invalid request\n\n - Failed to set a new password\n"
@@ -3668,7 +3668,7 @@
                     "OAuth API - REST API"
                 ],
                 "summary": "Sign in to 3cixty Platform",
-                "description": "This Api is to be used to sign in to 3cixty Platform. \nIf the email, password pair is found in the 3cixty Platform, the platform redirects to authorization page in order to generate a valid `3cixty access_token`. Otherwise, On the failure an appropriate message is returned. The return is in `JSON` format, for example `{\"response\": \"failed\", \"reason\": \"<message>\"}`. Some example of returned messages are: - App key is empty - App key is invalid - Email is empty - Email is invalid - Your email and password don't match.\nOn the failure an appropriate message is returned. The return is in `JSON` format, for example `{\"response\": \"failed\", \"reason\": \"<message>\"}`. Some example of returned messages are: - App key is empty - App key is invalid - Email is empty - Email is invalid - Your email and password don't match!!!\n",
+                "description": "This Api is to be used to sign in to 3cixty Platform. \\nIf the email, password pair is found in the 3cixty Platform, the platform redirects to authorization page in order to generate a valid `3cixty access_token`. Otherwise, On the failure an appropriate message is returned. The return is in `JSON` format, for example `{\\\"response\\\": \\\"failed\\\", \\\"reason\\\": \\\"<message>\\\"}`. Some example of returned messages are: \n  - App key is empty \n  - App key is invalid \n  - Email is empty \n  - Email is invalid \n  - Your email and password don't match.\n",
                 "produces": [
                     "application/json"
                 ],
