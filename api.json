@@ -3662,7 +3662,7 @@
                 }
             }
         },
-        "/signIn": {
+        "/signin": {
             "post": {
                 "tags": [
                     "OAuth API - REST API"
@@ -3724,7 +3724,7 @@
                 }
             }
         },
-        "/signInOnMobile": {
+        "/signinOnMobile": {
             "post": {
                 "tags": [
                     "OAuth API - REST API"
