@@ -11,14 +11,15 @@ Change the following 3 entries:
   ``` javascript
   showPetStore: function(){
     this.trigger('update-swagger-ui', {
-      url:'https://<host>/apidocs/api.json'
+      url:'https://<host>/api.json'
     });
   },
   ```
   and change the `url` to reflect the `host`.
-- copy the folder `apidocs` to `<pathToApacheTomcat>/webapps/`
+- rename `apidocs` to `httpdocs`  
+- copy the folder `apidocs` to `/var/www/apidocs.3cixty.com/`
 
 ###To Access
 
-Use `https://<host>/apidocs/index.html`
+Use `https://apidocs.3cixty.com`
 
