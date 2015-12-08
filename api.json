@@ -3831,9 +3831,7 @@
 	"/getSocialScores": {
             "get": {
                 "tags": [
-                    [
                         "QueryManager/Augmentation API - REST API"
-                    ]
                 ],
                 "summary": "Get social score for places",
                 "description": "This API is used to get social scores for either the user themselves or the user's friends.\n",
@@ -4013,7 +4011,7 @@
                 "tags": [
                     "Profile API - REST API"
                 ],
-                "summary": "Remove friend",
+                "summary": "Remove friends",
                 "description": "This API is used to remember that a given `friendUid` separated by comma should not be crawled from next time when the user signs in with Google or Facebook to 3cixty. The backend persists the request into a table. After that, every time the user signs in with Google or Facebook account to 3cixty, the backend checks the table to know whether or not the information about the friend should be ignored.\nOn the failure an appropriate message is returned. Some example of returned messages are:\n - Empty friend UID\n - Failed to remove the friend from your profile\n - Your access token is invalid\n",
                 "produces": [
                     "text/html"
