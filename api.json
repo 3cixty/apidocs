@@ -3847,7 +3847,8 @@
                         "in": "query",
                         "description": "score the places where the rating value is greater than the rating.\n",
                         "default": 3,
-                        "type": "double"
+                        "type": "number",
+                        "format": "double"
                     },
                     {
                         "name": "ratedByFriends",
