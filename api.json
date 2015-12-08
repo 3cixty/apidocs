@@ -15,7 +15,7 @@
             "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
         }
     },
-    "host": "dev.3cixty.com",
+    "host": "api.3cixty.com",
     "basePath": "/v2",
     "schemes": [
         "https"
