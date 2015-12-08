@@ -9,11 +9,7 @@
             "url": "https://www.3cixty.com/legal-information.html",
             "email": "support@3cixty.com"
         },
-        "termsOfService": "https://api.3cixty.com/v2/terms.html",
-        "license": {
-            "name": "Apache 2.0",
-            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
-        }
+        "termsOfService": "https://api.3cixty.com/v2/terms.html"
     },
     "host": "api.3cixty.com",
     "basePath": "/v2",
