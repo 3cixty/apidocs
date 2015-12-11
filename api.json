@@ -11,7 +11,7 @@
         },
         "termsOfService": "https://api.3cixty.com/v2/terms.html"
     },
-    "host": "api.3cixty.com",
+    "host": "<host>",
     "basePath": "/v2",
     "schemes": [
         "https"
