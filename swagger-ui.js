@@ -31108,7 +31108,7 @@ SwaggerUi.Views.HeaderView = Backbone.View.extend({
 
   showPetStore: function(){
     this.trigger('update-swagger-ui', {
-      url:'https://dev.3cixty.com/apidocs/api.json'
+      url:'https://<host>/api.json'
     });
   },
 
